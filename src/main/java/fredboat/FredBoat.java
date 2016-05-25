@@ -1,5 +1,8 @@
 package fredboat;
 
+import fredboat.command.maintenance.ExitCommand;
+import fredboat.command.maintenance.RestartCommand;
+import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
 import frederikam.jca.JCA;
 import frederikam.jca.JCABuilder;
@@ -100,7 +103,8 @@ public class FredBoat {
         myUser = jdaBot.getUserById(myUserId);
 
         //Commands
-        
+        CommandRegistry.registerCommand(0x01, "mexit", new ExitCommand());
+        CommandRegistry.registerCommand(0x11, "mrestart", new RestartCommand());
     }
     
     public static void shutdown(int code){

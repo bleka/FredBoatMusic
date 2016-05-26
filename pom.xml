@@ -27,6 +27,12 @@
             <version>3.0.1</version>
         </dependency>
         <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>jda-player</artifactId>
+            <version>0.2.1_7</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
             <groupId>frederikam</groupId>
             <artifactId>JCA</artifactId>
             <version>1.0</version>

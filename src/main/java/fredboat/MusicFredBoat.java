@@ -2,16 +2,15 @@ package fredboat;
 
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
+import fredboat.command.music.PlayCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
 import frederikam.jca.JCA;
 import frederikam.jca.JCABuilder;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Scanner;
 import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.JDA;
@@ -52,34 +51,15 @@ public class MusicFredBoat {
         Scanner scanner = new Scanner(is);
         JSONObject credsjson = new JSONObject(scanner.useDelimiter("\\A").next());
 
-        //accountEmail = credsjson.getString(ACCOUNT_EMAIL_KEY);
-        //accountPassword = credsjson.getString(ACCOUNT_PASSWORD_KEY);
         accountToken = credsjson.getString(ACCOUNT_TOKEN_KEY);
-        String cbUser = credsjson.getString("cbUser");
-        String cbKey = credsjson.getString("cbKey");
-        String redisPassword = credsjson.getString("redisPassword");
-
-        if (credsjson.has("scopePasswords")) {
-            JSONObject scopePasswords = credsjson.getJSONObject("scopePasswords");
-            for (String k : scopePasswords.keySet()) {
-                scopePasswords.put(k, scopePasswords.getString(k));
-            }
-        }
 
         scanner.close();
 
         //Initialise event listeners
         listenerBot = new EventListenerBoat(0x01, PREFIX);
 
-        fredboat.util.HttpUtils.init();
         jdaBot = new JDABuilder().addListener(listenerBot).setBotToken(accountToken).buildAsync();
         System.out.println("JDA version:\t" + JDAInfo.VERSION);
-
-        //Initialise JCA
-        jca = new JCABuilder().setKey(cbKey).setUser(cbUser).buildBlocking();
-        
-        jedis = new Jedis("frednet3.revgamesrblx.com", 6379);
-        jedis.auth(redisPassword);
     }
 
     public static void init() {
@@ -105,6 +85,7 @@ public class MusicFredBoat {
         //Commands
         CommandRegistry.registerCommand(0x01, "mexit", new ExitCommand());
         CommandRegistry.registerCommand(0x11, "mrestart", new RestartCommand());
+        CommandRegistry.registerCommand(0x11, "play", new PlayCommand());
     }
     
     public static void shutdown(int code){

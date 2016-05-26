@@ -2,6 +2,7 @@ package fredboat.util;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import fredboat.commandmeta.MessagingException;
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
@@ -23,6 +24,10 @@ public class TextUtils {
     }
 
     public static void handleException(Exception e, MessageChannel channel, User invoker) {
+        if (e instanceof MessagingException){
+            channel.sendMessage(invoker.getUsername() + ": " + e.getMessage());
+            return;
+        }
         MessageBuilder builder = new MessageBuilder();
 
         builder.appendMention(invoker);

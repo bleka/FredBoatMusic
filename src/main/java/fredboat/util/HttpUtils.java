@@ -1,6 +1,6 @@
 package fredboat.util;
 
-import fredboat.FredBoat;
+import fredboat.MusicFredBoat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

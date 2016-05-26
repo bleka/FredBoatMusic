@@ -1,6 +1,6 @@
 package fredboat.command.maintenance;
 
-import fredboat.FredBoat;
+import fredboat.MusicFredBoat;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.ICommandOwnerRestricted;
 import fredboat.util.ExitCodes;
@@ -20,7 +20,7 @@ public class RestartCommand extends Command implements ICommandOwnerRestricted {
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         channel.sendMessage(TextUtils.prefaceWithMention(invoker, " Restarting.."));
         
-        FredBoat.shutdown(ExitCodes.EXIT_CODE_RESTART);
+        MusicFredBoat.shutdown(ExitCodes.EXIT_CODE_RESTART);
     }
 
 }

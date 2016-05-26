@@ -23,8 +23,8 @@ import net.dv8tion.jda.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
-import fredboat.FredBoat;
-import static fredboat.FredBoat.jdaBot;
+import fredboat.MusicFredBoat;
+import static fredboat.MusicFredBoat.jdaBot;
 import java.util.regex.Matcher;
 
 public class EventListenerBoat extends ListenerAdapter {
@@ -118,7 +118,7 @@ public class EventListenerBoat extends ListenerAdapter {
     public void onInviteReceived(InviteReceivedEvent event) {
         if (event.getMessage().isPrivate()) {
             event.getAuthor().getPrivateChannel().sendMessage("Sorry! Since the release of the official API, registered bots must now be invited by someone with Manage **Server permissions**. If you have permissions, you can invite me at:\n"
-                    + "https://discordapp.com/oauth2/authorize?&client_id=" + FredBoat.CLIENT_ID + "&scope=bot");
+                    + "https://discordapp.com/oauth2/authorize?&client_id=" + MusicFredBoat.CLIENT_ID + "&scope=bot");
             /*
             //System.out.println(event.getInvite().getUrl());
             //InviteUtil.join(event.getInvite(), FredBoat.jda);
@@ -162,7 +162,7 @@ public class EventListenerBoat extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
-        FredBoat.init();
+        MusicFredBoat.init();
         jdaBot.getAccountManager().setGame("Say ;;help");
     }
 

@@ -21,7 +21,7 @@ import net.dv8tion.jda.entities.User;
 import org.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
-public class FredBoat {
+public class MusicFredBoat {
 
     public static final boolean IS_BETA = true;
     public static volatile JDA jdaBot;
@@ -46,7 +46,7 @@ public class FredBoat {
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, IOException {
         //Load credentials file
-        FredBoat instance = new FredBoat();
+        MusicFredBoat instance = new MusicFredBoat();
         InputStream is = new FileInputStream(new File("./credentials.json"));
         //InputStream is = instance.getClass().getClassLoader().getResourceAsStream("credentials.json");
         Scanner scanner = new Scanner(is);

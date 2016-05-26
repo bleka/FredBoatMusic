@@ -30,7 +30,6 @@
             <groupId>net.dv8tion</groupId>
             <artifactId>jda-player</artifactId>
             <version>0.2.1_7</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>frederikam</groupId>

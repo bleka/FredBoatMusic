@@ -34,6 +34,9 @@ public class PlayCommand extends Command {
         manager.setSendingHandler(player);
         
         RemoteSource source = new RemoteSource(args[1]);
+        if(source.getInfo().getError() != null){
+            throw new MessagingException("Could not load URL: " + source.getInfo().getError());
+        }
         player.getAudioQueue().add(source);
         player.play();
     }

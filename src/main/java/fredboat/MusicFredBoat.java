@@ -2,6 +2,7 @@ package fredboat;
 
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
+import fredboat.command.music.MusicInfoCommand;
 import fredboat.command.music.PlayCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
@@ -86,6 +87,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x01, "mexit", new ExitCommand());
         CommandRegistry.registerCommand(0x11, "mrestart", new RestartCommand());
         CommandRegistry.registerCommand(0x11, "play", new PlayCommand());
+        CommandRegistry.registerCommand(0x11, "minfo", new MusicInfoCommand());
     }
     
     public static void shutdown(int code){

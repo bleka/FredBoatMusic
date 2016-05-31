@@ -14,6 +14,8 @@ import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.managers.AudioManager;
 import net.dv8tion.jda.player.MusicPlayer;
+import net.dv8tion.jda.player.Playlist;
+import net.dv8tion.jda.player.source.AudioSource;
 import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
 
@@ -32,13 +34,62 @@ public class PlayCommand extends Command {
         MusicPlayer player = PlayerRegistry.get(guild.getId());
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(player);
-        
-        RemoteSource source = new RemoteSource(args[1]);
-        if(source.getInfo().getError() != null){
-            throw new MessagingException("Could not load URL: " + source.getInfo().getError());
+
+        Playlist playlist = Playlist.getPlaylist(args[1]);
+        if (playlist.getSources().isEmpty()) {
+            if (player.getAudioQueue().isEmpty()) {
+                manager.closeAudioConnection();
+                throw new MessagingException("The playlist is currently empty.");
+            }
+        } else if (playlist.getSources().size() == 1) {
+            AudioSource source = playlist.getSources().get(0);
+            if (source.getInfo().getError() != null) {
+                manager.closeAudioConnection();
+                throw new MessagingException("Could not load URL: " + source.getInfo().getError());
+            }
+            player.getAudioQueue().add(source);
+            if(player.isPlaying()){
+                channel.sendMessage("**"+source.getInfo().getTitle()+"** has been added to the queue.");
+            } else {
+                channel.sendMessage("**"+source.getInfo().getTitle()+"** will now play.");
+                player.play();
+            }
+        } else {
+            //We have multiple sources in the playlist
+            System.out.println("Found a playlist with "+playlist.getSources().size() + "entries");
+            int successfullyAdded = 0;
+            int i = 0;
+            for (AudioSource source : playlist.getSources()) {
+                i++;
+                if (source.getInfo().getError() == null){
+                    successfullyAdded++;
+                    player.getAudioQueue().add(source);
+                } else {
+                    channel.sendMessage("Failed to queue #"+i+": "+source.getInfo().getError());
+                }
+                
+                //Begin to play if we are not already and if we have at least one source
+                if(player.isPlaying() == false && player.getAudioQueue().isEmpty() == false){
+                    player.play();
+                }
+            }
+            
+            switch (successfullyAdded) {
+                case 0:
+                    channel.sendMessage("Failed to queue any new songs.");
+                    break;
+                case 1:
+                    channel.sendMessage("A song has been added to the queue.");
+                    break;
+                default:
+                    channel.sendMessage("**"+successfullyAdded+" songs** have been successfully added.");
+                    break;
+            }
+            
+            if(!player.isPlaying()){
+                player.play();
+            }
         }
-        player.getAudioQueue().add(source);
-        player.play();
     }
 
     public void joinChannel(Guild guild, SelfInfo self, User usr) {
@@ -62,14 +113,16 @@ public class PlayCommand extends Command {
 
         AudioManager manager = guild.getAudioManager();
         manager.openAudioConnection(targetChannel);
-        while (manager.isAttemptingToConnect()) {
+        /*while (manager.isAttemptingToConnect() == true && manager.isConnected() == false) {
+             System.out.println(manager.isAttemptingToConnect() + " : " + manager.isConnected());
             synchronized (this) {
                 try {
                     wait(100);
                 } catch (InterruptedException ex) {
                 }
             }
-        }
+        }*/
+        System.out.println("Connected to voice channel");
     }
 
 }

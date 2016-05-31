@@ -5,6 +5,7 @@ import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
 import fredboat.command.music.JoinCommand;
 import fredboat.command.music.LeaveCommand;
+import fredboat.command.music.ListCommand;
 import fredboat.command.music.MusicInfoCommand;
 import fredboat.command.music.NowplayingCommand;
 import fredboat.command.music.PlayCommand;
@@ -97,6 +98,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "join", new JoinCommand());
         CommandRegistry.registerCommand(0x11, "nowplaying", new NowplayingCommand());
         CommandRegistry.registerCommand(0x11, "leave", new LeaveCommand());
+        CommandRegistry.registerCommand(0x11, "list", new ListCommand());
     }
     
     public static void shutdown(int code){

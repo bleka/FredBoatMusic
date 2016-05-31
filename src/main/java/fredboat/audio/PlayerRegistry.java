@@ -17,6 +17,7 @@ public class PlayerRegistry {
         if (player == null){
             player = new MusicPlayer();
             player.setVolume(DEFAULT_VOLUME);
+            registry.put(k, player);
         }
         return player;
     }

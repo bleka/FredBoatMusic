@@ -90,6 +90,12 @@ public class PlayCommand extends Command {
                 player.play();
             }
         }
+        
+        try {
+            message.deleteMessage();
+        } catch (Exception ex){
+            
+        }
     }
 
     public static void joinChannel(Guild guild, SelfInfo self, User usr) {

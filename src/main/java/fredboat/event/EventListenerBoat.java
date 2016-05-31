@@ -171,17 +171,4 @@ public class EventListenerBoat extends ListenerAdapter {
         jdaBot.getAccountManager().setGame("Say ;;help");
     }
 
-    public static Runnable onUnrequestedConnection = new Runnable() {
-        @Override
-        public void run() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-    };
-
-    @Override
-    public void onAudioConnect(AudioConnectEvent event) {
-        Runnable run = toRunOnConnectingToVoice.getOrDefault(event.getConnectedChannel(), onUnrequestedConnection);
-        run.run();
-    }
-
 }

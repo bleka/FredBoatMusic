@@ -53,9 +53,12 @@ public class PlayCommand extends Command {
             }
         } else {
             //We have multiple sources in the playlist
-            System.out.println("Found a playlist with "+playlist.getSources().size() + "entries");
+            channel.sendMessage("Found a playlist with "+playlist.getSources().size() + "entries");
             int successfullyAdded = 0;
             int i = 0;
+            if(playlist.getSources().size() > 30){
+                throw new MessagingException("Please do not queue playlists with more than 30 songs");
+            }
             for (AudioSource source : playlist.getSources()) {
                 i++;
                 if (source.getInfo().getError() == null){

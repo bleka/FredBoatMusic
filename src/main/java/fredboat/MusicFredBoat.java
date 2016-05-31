@@ -1,9 +1,11 @@
 package fredboat;
 
+import fredboat.command.maintenance.EvalCommand;
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
 import fredboat.command.music.MusicInfoCommand;
 import fredboat.command.music.PlayCommand;
+import fredboat.command.music.SkipCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
 import frederikam.jca.JCA;
@@ -23,7 +25,7 @@ import redis.clients.jedis.Jedis;
 
 public class MusicFredBoat {
 
-    public static final boolean IS_BETA = true;
+    public static final boolean IS_BETA = false;
     public static volatile JDA jdaBot;
     public static JCA jca;
     public static final String PREFIX = IS_BETA ? "¤" : ";;";
@@ -88,6 +90,8 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "mrestart", new RestartCommand());
         CommandRegistry.registerCommand(0x11, "play", new PlayCommand());
         CommandRegistry.registerCommand(0x11, "minfo", new MusicInfoCommand());
+        CommandRegistry.registerCommand(0x11, "meval", new EvalCommand());
+        CommandRegistry.registerCommand(0x11, "skip", new SkipCommand());
     }
     
     public static void shutdown(int code){

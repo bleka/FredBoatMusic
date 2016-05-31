@@ -58,11 +58,6 @@ public class EventListenerBoat extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContent().endsWith("(╯°□°）╯︵ ┻━┻")) {
-            tableflip(event);
-            return;
-        }
-
         if (event.getMessage().getContent().substring(0, prefix.length()).equals(prefix)) {
             String cmdName;
             Command invoked = null;
@@ -116,30 +111,10 @@ public class EventListenerBoat extends ListenerAdapter {
 
     @Override
     public void onInviteReceived(InviteReceivedEvent event) {
-        if (event.getMessage().isPrivate()) {
+        /*if (event.getMessage().isPrivate()) {
             event.getAuthor().getPrivateChannel().sendMessage("Sorry! Since the release of the official API, registered bots must now be invited by someone with Manage **Server permissions**. If you have permissions, you can invite me at:\n"
                     + "https://discordapp.com/oauth2/authorize?&client_id=" + MusicFredBoat.CLIENT_ID + "&scope=bot");
-            /*
-            //System.out.println(event.getInvite().getUrl());
-            //InviteUtil.join(event.getInvite(), FredBoat.jda);
-            Guild guild = null;
-            try {
-                guild = FredBoat.jda.getGuildById(event.getInvite().getGuildId());
-            } catch (NullPointerException ex) {
-                event.getAuthor().getPrivateChannel().sendMessage("That invite is not valid!");
-                return;
-            }
-
-            boolean isNotInGuild = true;
-
-            if (isNotInGuild) {
-                event.getAuthor().getPrivateChannel().sendMessage("Invite accepted!");
-                InviteUtil.join(event.getInvite(), FredBoat.jda, null);
-            } else {
-                event.getAuthor().getPrivateChannel().sendMessage("Already in that channel!");
-            }
-             */
-        }
+        }*/
     }
 
     @Override

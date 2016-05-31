@@ -119,9 +119,9 @@ public class PlayCommand extends Command {
 
         AudioManager manager = guild.getAudioManager();
         if (manager.getConnectedChannel() != null){
-            manager.openAudioConnection(targetChannel);
-        } else {
             manager.moveAudioConnection(targetChannel);
+        } else {
+            manager.openAudioConnection(targetChannel);
         }
         
         /*while (manager.isAttemptingToConnect() == true && manager.isConnected() == false) {

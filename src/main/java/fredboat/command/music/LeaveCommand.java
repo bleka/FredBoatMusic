@@ -1,13 +1,11 @@
 package fredboat.command.music;
 
-import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.managers.AudioManager;
-import net.dv8tion.jda.player.MusicPlayer;
 
 public class LeaveCommand extends Command {
 

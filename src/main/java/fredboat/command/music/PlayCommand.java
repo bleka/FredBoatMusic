@@ -92,7 +92,7 @@ public class PlayCommand extends Command {
         }
     }
 
-    public void joinChannel(Guild guild, SelfInfo self, User usr) {
+    public static void joinChannel(Guild guild, SelfInfo self, User usr) {
         VoiceChannel targetChannel = guild.getVoiceStatusOfUser(usr).getChannel();
 
         if (!guild.getVoiceStatusOfUser(usr).inVoiceChannel()) {

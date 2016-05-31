@@ -142,24 +142,6 @@ public class EventListenerBoat extends ListenerAdapter {
         }
     }
 
-    public HashMap<String, ArrayList<Integer>> recentTableFlips = new HashMap<>();
-
-    public void pruneRecentTableflips(Guild guild, int seconds) {
-        ArrayList<Integer> recent = recentTableFlips.containsKey(guild.getId()) ? recentTableFlips.get(guild.getId()) : new ArrayList<>();
-        for (int time : recent) {
-
-        }
-    }
-
-    public void getRecentTableflips(Guild guild, int seconds) {
-
-    }
-
-    public void tableflip(MessageReceivedEvent event) {
-        //System.out.println(event.getGuild().getName() + " \t " + event.getAuthor().getUsername() + " \t " + event.getMessage().getRawContent());
-        //event.getChannel().sendMessage("┬─┬﻿ ノ( ゜-゜ノ)");
-    }
-
     @Override
     public void onReady(ReadyEvent event) {
         MusicFredBoat.init();
@@ -168,7 +150,7 @@ public class EventListenerBoat extends ListenerAdapter {
 
     @Override
     public void onReconnect(ReconnectedEvent event) {
-        jdaBot.getAccountManager().setGame("Say ;;help");
+        jdaBot.getAccountManager().setGame("music");
     }
 
 }

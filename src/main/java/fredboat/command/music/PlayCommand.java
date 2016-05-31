@@ -3,8 +3,6 @@ package fredboat.command.music;
 import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.MessagingException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
@@ -16,7 +14,6 @@ import net.dv8tion.jda.managers.AudioManager;
 import net.dv8tion.jda.player.MusicPlayer;
 import net.dv8tion.jda.player.Playlist;
 import net.dv8tion.jda.player.source.AudioSource;
-import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
 
 public class PlayCommand extends Command {

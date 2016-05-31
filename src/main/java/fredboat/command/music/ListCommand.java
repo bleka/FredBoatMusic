@@ -34,7 +34,7 @@ public class ListCommand extends Command {
             
             mb.appendString("\n\nThere are a total of ")
                     .appendString(String.valueOf(player.getAudioQueue().size()), MessageBuilder.Formatting.BOLD)
-                    .appendString(" queued.");
+                    .appendString(" queued songs.");
             
             channel.sendMessage(mb.build());
         } else {

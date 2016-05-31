@@ -9,7 +9,6 @@ import fredboat.command.music.SkipCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
 import frederikam.jca.JCA;
-import frederikam.jca.JCABuilder;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -92,6 +91,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "minfo", new MusicInfoCommand());
         CommandRegistry.registerCommand(0x11, "meval", new EvalCommand());
         CommandRegistry.registerCommand(0x11, "skip", new SkipCommand());
+        CommandRegistry.registerCommand(0x11, "join", new JoinCommand());
     }
     
     public static void shutdown(int code){

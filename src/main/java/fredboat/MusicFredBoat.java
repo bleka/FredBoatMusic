@@ -3,7 +3,9 @@ package fredboat;
 import fredboat.command.maintenance.EvalCommand;
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
+import fredboat.command.music.JoinCommand;
 import fredboat.command.music.MusicInfoCommand;
+import fredboat.command.music.NowplayingCommand;
 import fredboat.command.music.PlayCommand;
 import fredboat.command.music.SkipCommand;
 import fredboat.commandmeta.CommandRegistry;
@@ -92,6 +94,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "meval", new EvalCommand());
         CommandRegistry.registerCommand(0x11, "skip", new SkipCommand());
         CommandRegistry.registerCommand(0x11, "join", new JoinCommand());
+        CommandRegistry.registerCommand(0x11, "nowplaying", new NowplayingCommand());
     }
     
     public static void shutdown(int code){

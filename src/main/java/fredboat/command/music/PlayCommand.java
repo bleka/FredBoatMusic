@@ -99,9 +99,9 @@ public class PlayCommand extends Command {
             throw new MessagingException("You must join a voice channel first.");
         }
 
-        if (guild.getVoiceStatusOfUser(self).inVoiceChannel()) {
+        /*if (guild.getVoiceStatusOfUser(self).inVoiceChannel()) {
             throw new MessagingException("I need to leave my current channel first.");
-        }
+        }*/
 
         if (PermissionUtil.checkPermission(self, Permission.VOICE_CONNECT, targetChannel) == false) {
             throw new MessagingException("I am not permitted to connect to that voice channel.");

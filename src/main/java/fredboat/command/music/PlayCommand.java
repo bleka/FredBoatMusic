@@ -20,6 +20,11 @@ public class PlayCommand extends Command {
 
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
+        if(args.length < 2){
+            channel.sendMessage("Proper syntax: ;;play <url>");
+            return;
+        }
+        
         SelfInfo self = guild.getJDA().getSelfInfo();
 
         //Check that we are in the same voice channel

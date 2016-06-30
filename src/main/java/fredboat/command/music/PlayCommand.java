@@ -101,7 +101,7 @@ public class PlayCommand extends Command {
     public static void joinChannel(Guild guild, SelfInfo self, User usr) {
         VoiceChannel targetChannel = guild.getVoiceStatusOfUser(usr).getChannel();
 
-        if (!guild.getVoiceStatusOfUser(usr).inVoiceChannel()) {
+        if (targetChannel == null) {
             throw new MessagingException("You must join a voice channel first.");
         }
 

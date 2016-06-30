@@ -3,6 +3,7 @@ package fredboat;
 import fredboat.command.maintenance.EvalCommand;
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
+import fredboat.command.maintenance.UpdateCommand;
 import fredboat.command.music.JoinCommand;
 import fredboat.command.music.LeaveCommand;
 import fredboat.command.music.ListCommand;
@@ -99,6 +100,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "nowplaying", new NowplayingCommand());
         CommandRegistry.registerCommand(0x11, "leave", new LeaveCommand());
         CommandRegistry.registerCommand(0x11, "list", new ListCommand());
+        CommandRegistry.registerCommand(0x11, "mupdate", new UpdateCommand());
     }
     
     public static void shutdown(int code){

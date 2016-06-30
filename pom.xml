@@ -29,7 +29,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>jda-player</artifactId>
-            <version>0.2.1_7</version>
+            <version>0.2.1_9</version>
         </dependency>
         <dependency>
             <groupId>frederikam</groupId>

@@ -13,18 +13,20 @@ import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.managers.AudioManager;
 import net.dv8tion.jda.player.MusicPlayer;
 import net.dv8tion.jda.player.Playlist;
+import net.dv8tion.jda.player.source.AudioInfo;
 import net.dv8tion.jda.player.source.AudioSource;
+import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
 
 public class PlayCommand extends Command {
 
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
-        if(args.length < 2){
+        if (args.length < 2) {
             channel.sendMessage("Proper syntax: ;;play <url>");
             return;
         }
-        
+
         SelfInfo self = guild.getJDA().getSelfInfo();
 
         //Check that we are in the same voice channel
@@ -37,7 +39,21 @@ public class PlayCommand extends Command {
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(player);
 
-        Playlist playlist = Playlist.getPlaylist(args[1]);
+        Playlist playlist;
+        try {
+            playlist = Playlist.getPlaylist(args[1]);
+        } catch (NullPointerException ex) {
+            String url = args[1];
+            RemoteSource rs = new RemoteSource(url);
+
+            AudioInfo rsinfo = rs.getInfo();
+            if (rsinfo.getError() != null) {
+                channel.sendMessage("Was unable to queue song:" + rsinfo.getError());
+            } else {
+                throw new RuntimeException("Caught exception but unable to determine yt-dl error", ex);
+            }
+            return;
+        }
         if (playlist.getSources().isEmpty()) {
             if (player.getAudioQueue().isEmpty()) {
                 manager.closeAudioConnection();
@@ -50,35 +66,35 @@ public class PlayCommand extends Command {
                 throw new MessagingException("Could not load URL: " + source.getInfo().getError());
             }
             player.getAudioQueue().add(source);
-            if(player.isPlaying()){
-                channel.sendMessage("**"+source.getInfo().getTitle()+"** has been added to the queue.");
+            if (player.isPlaying()) {
+                channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
             } else {
-                channel.sendMessage("**"+source.getInfo().getTitle()+"** will now play.");
+                channel.sendMessage("**" + source.getInfo().getTitle() + "** will now play.");
                 player.play();
             }
         } else {
             //We have multiple sources in the playlist
-            channel.sendMessage("Found a playlist with "+playlist.getSources().size() + "entries");
+            channel.sendMessage("Found a playlist with " + playlist.getSources().size() + "entries");
             int successfullyAdded = 0;
             int i = 0;
-            if(playlist.getSources().size() > 30){
+            if (playlist.getSources().size() > 30) {
                 throw new MessagingException("Please do not queue playlists with more than 30 songs");
             }
             for (AudioSource source : playlist.getSources()) {
                 i++;
-                if (source.getInfo().getError() == null){
+                if (source.getInfo().getError() == null) {
                     successfullyAdded++;
                     player.getAudioQueue().add(source);
                 } else {
-                    channel.sendMessage("Failed to queue #"+i+": "+source.getInfo().getError());
+                    channel.sendMessage("Failed to queue #" + i + ": " + source.getInfo().getError());
                 }
-                
+
                 //Begin to play if we are not already and if we have at least one source
-                if(player.isPlaying() == false && player.getAudioQueue().isEmpty() == false){
+                if (player.isPlaying() == false && player.getAudioQueue().isEmpty() == false) {
                     player.play();
                 }
             }
-            
+
             switch (successfullyAdded) {
                 case 0:
                     channel.sendMessage("Failed to queue any new songs.");
@@ -87,19 +103,19 @@ public class PlayCommand extends Command {
                     channel.sendMessage("A song has been added to the queue.");
                     break;
                 default:
-                    channel.sendMessage("**"+successfullyAdded+" songs** have been successfully added.");
+                    channel.sendMessage("**" + successfullyAdded + " songs** have been successfully added.");
                     break;
             }
-            
-            if(!player.isPlaying()){
+
+            if (!player.isPlaying()) {
                 player.play();
             }
         }
-        
+
         try {
             message.deleteMessage();
-        } catch (Exception ex){
-            
+        } catch (Exception ex) {
+
         }
     }
 
@@ -113,7 +129,6 @@ public class PlayCommand extends Command {
         /*if (guild.getVoiceStatusOfUser(self).inVoiceChannel()) {
             throw new MessagingException("I need to leave my current channel first.");
         }*/
-
         if (PermissionUtil.checkPermission(self, Permission.VOICE_CONNECT, targetChannel) == false) {
             throw new MessagingException("I am not permitted to connect to that voice channel.");
         }
@@ -123,12 +138,12 @@ public class PlayCommand extends Command {
         }
 
         AudioManager manager = guild.getAudioManager();
-        if (manager.getConnectedChannel() != null){
+        if (manager.getConnectedChannel() != null) {
             manager.moveAudioConnection(targetChannel);
         } else {
             manager.openAudioConnection(targetChannel);
         }
-        
+
         /*while (manager.isAttemptingToConnect() == true && manager.isConnected() == false) {
              System.out.println(manager.isAttemptingToConnect() + " : " + manager.isConnected());
             synchronized (this) {

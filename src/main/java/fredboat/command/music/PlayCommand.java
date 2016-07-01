@@ -78,7 +78,7 @@ public class PlayCommand extends Command {
             int successfullyAdded = 0;
             int i = 0;
             if (playlist.getSources().size() > 30) {
-                throw new MessagingException("Please do not queue playlists with more than 30 songs");
+                channel.sendMessage("This playlist contains too many entries. Adding the first 30 instead...");
             }
             for (AudioSource source : playlist.getSources()) {
                 i++;
@@ -92,6 +92,10 @@ public class PlayCommand extends Command {
                 //Begin to play if we are not already and if we have at least one source
                 if (player.isPlaying() == false && player.getAudioQueue().isEmpty() == false) {
                     player.play();
+                }
+                
+                if(successfullyAdded == 30){
+                    break;
                 }
             }
 

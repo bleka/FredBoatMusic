@@ -8,17 +8,14 @@ package fredboat.event;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.CommandManager;
 import fredboat.commandmeta.CommandRegistry;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
-import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.events.InviteReceivedEvent;
 import net.dv8tion.jda.events.ReadyEvent;
 import net.dv8tion.jda.events.ReconnectedEvent;
-import net.dv8tion.jda.events.audio.AudioConnectEvent;
 import net.dv8tion.jda.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
@@ -35,6 +32,8 @@ public class EventListenerBoat extends ListenerAdapter {
     public final int scope;
     public final String prefix;
     private final Pattern commandNamePrefix;
+    
+    public static int messagesReceived = 0;
 
     public EventListenerBoat(int scope, String prefix) {
         this.scope = scope;
@@ -44,6 +43,8 @@ public class EventListenerBoat extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        messagesReceived++;
+        
         if (event.getPrivateChannel() != null) {
             System.out.println("PRIVATE" + " \t " + event.getAuthor().getUsername() + " \t " + event.getMessage().getRawContent());
             return;

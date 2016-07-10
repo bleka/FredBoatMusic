@@ -1,5 +1,6 @@
 package fredboat;
 
+import fredboat.agent.CarbonAgent;
 import fredboat.command.maintenance.EvalCommand;
 import fredboat.command.maintenance.ExitCommand;
 import fredboat.command.maintenance.RestartCommand;
@@ -67,6 +68,12 @@ public class MusicFredBoat {
 
         jdaBot = new JDABuilder().addListener(listenerBot).setBotToken(accountToken).buildAsync();
         System.out.println("JDA version:\t" + JDAInfo.VERSION);
+
+        //Start statistics agent
+        if (!IS_BETA) {
+            CarbonAgent carbon = new CarbonAgent(jdaBot, "music", true);
+            carbon.start();
+        }
     }
 
     public static void init() {
@@ -85,7 +92,6 @@ public class MusicFredBoat {
                 System.out.println("\t" + channel.getName());
             }
         }*/
-
         myUserId = jdaBot.getSelfInfo().getId();
         myUser = jdaBot.getUserById(myUserId);
 
@@ -102,10 +108,10 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "list", new ListCommand());
         CommandRegistry.registerCommand(0x11, "mupdate", new UpdateCommand());
     }
-    
-    public static void shutdown(int code){
+
+    public static void shutdown(int code) {
         //jdaBot.shutdown(true);
-        if(jedis != null){
+        if (jedis != null) {
             jedis.shutdown();
         }
         System.exit(code);

@@ -5,6 +5,7 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.SelfInfo;
+import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.managers.AudioManager;
@@ -63,6 +64,16 @@ public class GuildPlayer extends MusicPlayer {
         System.out.println("Connected to voice channel " + targetChannel);
     }
     
+    public void leaveVoiceChannelRequest(TextChannel channel){
+        AudioManager manager = guild.getAudioManager();
+        if(manager.getConnectedChannel() == null){
+            channel.sendMessage("Not currently in a channel");
+        } else {
+            channel.sendMessage("Left channel" + getChannel().getName());
+        }
+        manager.closeAudioConnection();
+    }
+    
     public VoiceChannel getUserCurrentVoiceChannel(User usr){
         for(VoiceChannel chn : guild.getVoiceChannels()){
             if(chn.getUsers().contains(usr)){
@@ -70,6 +81,10 @@ public class GuildPlayer extends MusicPlayer {
             }
         }
         return null;
+    }
+    
+    public VoiceChannel getChannel(){
+        return getUserCurrentVoiceChannel(jda.getSelfInfo());
     }
     
 }

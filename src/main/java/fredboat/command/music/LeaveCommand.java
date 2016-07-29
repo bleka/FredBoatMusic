@@ -1,5 +1,7 @@
 package fredboat.command.music;
 
+import fredboat.audio.GuildPlayer;
+import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
@@ -11,11 +13,8 @@ public class LeaveCommand extends Command {
 
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
-        AudioManager manager = guild.getAudioManager();
-        if(manager.getConnectedChannel() == null){
-            channel.sendMessage("Not currently in a channel");
-        }
-        manager.closeAudioConnection();
+        GuildPlayer player = PlayerRegistry.get(guild.getId());
+        player.leaveVoiceChannelRequest(channel);
     }
     
 }

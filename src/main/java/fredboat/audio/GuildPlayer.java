@@ -10,6 +10,10 @@ import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.managers.AudioManager;
 import net.dv8tion.jda.player.MusicPlayer;
+import net.dv8tion.jda.player.Playlist;
+import net.dv8tion.jda.player.source.AudioInfo;
+import net.dv8tion.jda.player.source.AudioSource;
+import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
 
 public class GuildPlayer extends MusicPlayer {
@@ -67,9 +71,9 @@ public class GuildPlayer extends MusicPlayer {
     public void leaveVoiceChannelRequest(TextChannel channel){
         AudioManager manager = guild.getAudioManager();
         if(manager.getConnectedChannel() == null){
-            channel.sendMessage("Not currently in a channel");
+            channel.sendMessage("Not currently in a channel.");
         } else {
-            channel.sendMessage("Left channel" + getChannel().getName());
+            channel.sendMessage("Left channel" + getChannel().getName() + ".");
         }
         manager.closeAudioConnection();
     }
@@ -81,6 +85,93 @@ public class GuildPlayer extends MusicPlayer {
             }
         }
         return null;
+    }
+    
+    public void playOrQueueSong(String url, TextChannel channel, User invoker){
+        //Check that we are in the same voice channel
+        if (guild.getVoiceStatusOfUser(invoker).getChannel() != guild.getVoiceStatusOfUser(self).getChannel()) {
+            joinChannel(invoker);
+        }
+
+        //Now we will either have thrown an exception or be in the same channel
+        AudioManager manager = guild.getAudioManager();
+        manager.setSendingHandler(this);
+
+        Playlist playlist;
+        try {
+            playlist = Playlist.getPlaylist(url);
+        } catch (NullPointerException ex) {
+            RemoteSource rs = new RemoteSource(url);
+
+            AudioInfo rsinfo = rs.getInfo();
+            if (rsinfo.getError() != null) {
+                channel.sendMessage("Was unable to queue song:" + rsinfo.getError());
+            } else {
+                throw new RuntimeException("Caught exception but unable to determine yt-dl error", ex);
+            }
+            return;
+        }
+        if (playlist.getSources().isEmpty()) {
+            if (this.getAudioQueue().isEmpty()) {
+                manager.closeAudioConnection();
+                throw new MessagingException("The playlist is currently empty.");
+            }
+        } else if (playlist.getSources().size() == 1) {
+            AudioSource source = playlist.getSources().get(0);
+            if (source.getInfo().getError() != null) {
+                manager.closeAudioConnection();
+                throw new MessagingException("Could not load URL: " + source.getInfo().getError());
+            }
+            this.getAudioQueue().add(source);
+            if (this.isPlaying()) {
+                channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
+            } else {
+                channel.sendMessage("**" + source.getInfo().getTitle() + "** will now play.");
+                this.play();
+            }
+        } else {
+            //We have multiple sources in the playlist
+            channel.sendMessage("Found a playlist with " + playlist.getSources().size() + "entries");
+            int successfullyAdded = 0;
+            int i = 0;
+            if (playlist.getSources().size() > 30) {
+                channel.sendMessage("This playlist contains too many entries. Adding the first 30 instead...");
+            }
+            for (AudioSource source : playlist.getSources()) {
+                i++;
+                if (source.getInfo().getError() == null) {
+                    successfullyAdded++;
+                    this.getAudioQueue().add(source);
+                } else {
+                    channel.sendMessage("Failed to queue #" + i + ": " + source.getInfo().getError());
+                }
+
+                //Begin to play if we are not already and if we have at least one source
+                if (this.isPlaying() == false && this.getAudioQueue().isEmpty() == false) {
+                    this.play();
+                }
+                
+                if(successfullyAdded == 30){
+                    break;
+                }
+            }
+
+            switch (successfullyAdded) {
+                case 0:
+                    channel.sendMessage("Failed to queue any new songs.");
+                    break;
+                case 1:
+                    channel.sendMessage("A song has been added to the queue.");
+                    break;
+                default:
+                    channel.sendMessage("**" + successfullyAdded + " songs** have been successfully added.");
+                    break;
+            }
+
+            if (!this.isPlaying()) {
+                this.play();
+            }
+        }
     }
     
     public VoiceChannel getChannel(){

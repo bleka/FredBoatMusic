@@ -14,7 +14,7 @@ public class SkipCommand extends Command {
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         MusicPlayer player = PlayerRegistry.get(guild.getId());
-        if (player.getAudioQueue().isEmpty()) {
+        if (player.getCurrentAudioSource() == null) {
             channel.sendMessage("The queue is empty!");
         } else {
             AudioSource src = player.getCurrentAudioSource();

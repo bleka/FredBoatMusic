@@ -1,22 +1,19 @@
 package fredboat.command.music;
 
+import fredboat.audio.GuildPlayer;
 import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.MessagingException;
-import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.SelfInfo;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.entities.VoiceChannel;
 import net.dv8tion.jda.managers.AudioManager;
-import net.dv8tion.jda.player.MusicPlayer;
 import net.dv8tion.jda.player.Playlist;
 import net.dv8tion.jda.player.source.AudioInfo;
 import net.dv8tion.jda.player.source.AudioSource;
 import net.dv8tion.jda.player.source.RemoteSource;
-import net.dv8tion.jda.utils.PermissionUtil;
 
 public class PlayCommand extends Command {
 
@@ -28,14 +25,14 @@ public class PlayCommand extends Command {
         }
 
         SelfInfo self = guild.getJDA().getSelfInfo();
+        GuildPlayer player = PlayerRegistry.get(guild.getId());
 
         //Check that we are in the same voice channel
         if (guild.getVoiceStatusOfUser(invoker).getChannel() != guild.getVoiceStatusOfUser(self).getChannel()) {
-            joinChannel(guild, self, invoker);
+            player.joinChannel(invoker);
         }
 
         //Now we will either have thrown an exception or be in the same channel
-        MusicPlayer player = PlayerRegistry.get(guild.getId());
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(player);
 
@@ -121,43 +118,6 @@ public class PlayCommand extends Command {
         } catch (Exception ex) {
 
         }
-    }
-
-    public static void joinChannel(Guild guild, SelfInfo self, User usr) {
-        VoiceChannel targetChannel = guild.getVoiceStatusOfUser(usr).getChannel();
-
-        if (targetChannel == null) {
-            throw new MessagingException("You must join a voice channel first.");
-        }
-
-        /*if (guild.getVoiceStatusOfUser(self).inVoiceChannel()) {
-            throw new MessagingException("I need to leave my current channel first.");
-        }*/
-        if (PermissionUtil.checkPermission(self, Permission.VOICE_CONNECT, targetChannel) == false) {
-            throw new MessagingException("I am not permitted to connect to that voice channel.");
-        }
-
-        if (PermissionUtil.checkPermission(self, Permission.VOICE_SPEAK, targetChannel) == false) {
-            throw new MessagingException("I am not permitted to play music in that voice channel.");
-        }
-
-        AudioManager manager = guild.getAudioManager();
-        if (manager.getConnectedChannel() != null) {
-            manager.moveAudioConnection(targetChannel);
-        } else {
-            manager.openAudioConnection(targetChannel);
-        }
-
-        /*while (manager.isAttemptingToConnect() == true && manager.isConnected() == false) {
-             System.out.println(manager.isAttemptingToConnect() + " : " + manager.isConnected());
-            synchronized (this) {
-                try {
-                    wait(100);
-                } catch (InterruptedException ex) {
-                }
-            }
-        }*/
-        System.out.println("Connected to voice channel");
     }
 
 }

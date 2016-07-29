@@ -1,28 +1,33 @@
 package fredboat.audio;
 
 import java.util.HashMap;
-import net.dv8tion.jda.player.MusicPlayer;
+import net.dv8tion.jda.JDA;
 
 public class PlayerRegistry {
     
-    private static HashMap<String, MusicPlayer> registry = new HashMap<>();
+    private static HashMap<String, GuildPlayer> registry = new HashMap<>();
     public static final float DEFAULT_VOLUME = 0.35f;
+    public static JDA jda;
     
-    public static void put(String k, MusicPlayer v){
+    public static void init(JDA api){
+        jda = api;
+    }
+    
+    public static void put(String k, GuildPlayer v){
         registry.put(k, v);
     }
     
-    public static MusicPlayer get(String k){
-        MusicPlayer player = registry.get(k);
+    public static GuildPlayer get(String k){
+        GuildPlayer player = registry.get(k);
         if (player == null){
-            player = new MusicPlayer();
+            player = new GuildPlayer(jda, jda.getGuildById(k));
             player.setVolume(DEFAULT_VOLUME);
             registry.put(k, player);
         }
         return player;
     }
     
-    public static MusicPlayer remove(String k){
+    public static GuildPlayer remove(String k){
         return registry.remove(k);
     }
     

@@ -1,5 +1,7 @@
 package fredboat.command.music;
 
+import fredboat.audio.GuildPlayer;
+import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
@@ -10,7 +12,8 @@ public class JoinCommand extends Command {
 
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
-        PlayCommand.joinChannel(guild, guild.getJDA().getSelfInfo(), invoker);
+        GuildPlayer player = PlayerRegistry.get(guild.getId());
+        player.joinChannel(invoker);
     }
     
 }

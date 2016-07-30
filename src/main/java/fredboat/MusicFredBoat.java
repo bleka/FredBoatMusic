@@ -12,6 +12,7 @@ import fredboat.command.music.ListCommand;
 import fredboat.command.music.MusicInfoCommand;
 import fredboat.command.music.NowplayingCommand;
 import fredboat.command.music.PlayCommand;
+import fredboat.command.music.SelectCommand;
 import fredboat.command.music.SkipCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
@@ -43,6 +44,7 @@ public class MusicFredBoat {
     public static final String ACCOUNT_TOKEN_KEY = IS_BETA ? "tokenBeta" : "token";
     private static String accountToken;
     public static String CLIENT_ID = "184405253028970496";
+    public static String googleServerKey = null;
 
     public static String myUserId = "";
     public static volatile User myUser;
@@ -61,6 +63,7 @@ public class MusicFredBoat {
         JSONObject credsjson = new JSONObject(scanner.useDelimiter("\\A").next());
 
         accountToken = credsjson.getString(ACCOUNT_TOKEN_KEY);
+        googleServerKey = credsjson.getString("googleServerKey");
 
         scanner.close();
 
@@ -110,6 +113,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "leave", new LeaveCommand());
         CommandRegistry.registerCommand(0x11, "list", new ListCommand());
         CommandRegistry.registerCommand(0x11, "mupdate", new UpdateCommand());
+        CommandRegistry.registerCommand(0x11, "select", new SelectCommand());
     }
 
     public static void shutdown(int code) {

@@ -1,6 +1,7 @@
 package fredboat.audio;
 
 import fredboat.commandmeta.MessagingException;
+import java.util.HashMap;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
@@ -21,6 +22,7 @@ public class GuildPlayer extends MusicPlayer {
     public final SelfInfo self;
     public final JDA jda;
     public final Guild guild;
+    public final HashMap<String, VideoSelection> selections = new HashMap<>();
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;

@@ -2,6 +2,7 @@ package fredboat.util;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import fredboat.MusicFredBoat;
 import fredboat.commandmeta.MessagingException;
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
@@ -31,7 +32,7 @@ public class TextUtils {
         MessageBuilder builder = new MessageBuilder();
 
         builder.appendMention(invoker);
-        builder.appendString(" an error occured :anger: ```java\n" + e.toString() + "\n");
+        builder.appendString(" an error occured :anger: ```java\n" + e.toString().replace(MusicFredBoat.googleServerKey, "GOOGLE_SERVER_KEY") + "\n");
 
         //builder.appendString("```java\n");
         for (StackTraceElement ste : e.getStackTrace()) {

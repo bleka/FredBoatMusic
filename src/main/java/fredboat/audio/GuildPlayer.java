@@ -75,7 +75,7 @@ public class GuildPlayer extends MusicPlayer {
         if(manager.getConnectedChannel() == null){
             channel.sendMessage("Not currently in a channel.");
         } else {
-            channel.sendMessage("Left channel" + getChannel().getName() + ".");
+            channel.sendMessage("Left channel " + getChannel().getName() + ".");
         }
         manager.closeAudioConnection();
     }

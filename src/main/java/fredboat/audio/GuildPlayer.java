@@ -82,8 +82,10 @@ public class GuildPlayer extends MusicPlayer {
     
     public VoiceChannel getUserCurrentVoiceChannel(User usr){
         for(VoiceChannel chn : guild.getVoiceChannels()){
-            if(chn.getUsers().contains(usr)){
-                return chn;
+            for(User userInChannel : chn.getUsers()){
+                if(usr.getId().equals(userInChannel.getId())){
+                    return chn;
+                }
             }
         }
         return null;

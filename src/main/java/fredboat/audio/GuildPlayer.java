@@ -93,7 +93,7 @@ public class GuildPlayer extends MusicPlayer {
     
     public void playOrQueueSong(String url, TextChannel channel, User invoker){
         //Check that we are in the same voice channel
-        if (guild.getVoiceStatusOfUser(invoker).getChannel() != guild.getVoiceStatusOfUser(self).getChannel()) {
+        if (getUserCurrentVoiceChannel(invoker) != getChannel()) {
             joinChannel(invoker);
         }
 

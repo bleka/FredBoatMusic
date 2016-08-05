@@ -117,10 +117,10 @@ public class MusicFredBoat {
     }
 
     public static void shutdown(int code) {
-        //jdaBot.shutdown(true);
-        if (jedis != null) {
-            jedis.shutdown();
-        }
+        jdaBot.shutdown(true);
+        //if (jedis != null) {
+        //    jedis.shutdown();
+        //}
         System.exit(code);
     }
 }

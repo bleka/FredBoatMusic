@@ -70,12 +70,14 @@ public class GuildPlayer extends MusicPlayer {
         System.out.println("Connected to voice channel " + targetChannel);
     }
     
-    public void leaveVoiceChannelRequest(TextChannel channel){
+    public void leaveVoiceChannelRequest(TextChannel channel, boolean silent){
         AudioManager manager = guild.getAudioManager();
-        if(manager.getConnectedChannel() == null){
-            channel.sendMessage("Not currently in a channel.");
-        } else {
-            channel.sendMessage("Left channel " + getChannel().getName() + ".");
+        if(!silent){
+            if(manager.getConnectedChannel() == null){
+                channel.sendMessage("Not currently in a channel.");
+            } else {
+                channel.sendMessage("Left channel " + getChannel().getName() + ".");
+            }
         }
         manager.closeAudioConnection();
     }

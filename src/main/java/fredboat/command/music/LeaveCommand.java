@@ -7,14 +7,13 @@ import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.managers.AudioManager;
 
 public class LeaveCommand extends Command {
 
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         GuildPlayer player = PlayerRegistry.get(guild.getId());
-        player.leaveVoiceChannelRequest(channel);
+        player.leaveVoiceChannelRequest(channel, false);
     }
     
 }

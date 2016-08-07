@@ -14,6 +14,7 @@ import fredboat.command.music.NowplayingCommand;
 import fredboat.command.music.PlayCommand;
 import fredboat.command.music.SelectCommand;
 import fredboat.command.music.SkipCommand;
+import fredboat.command.music.StopCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
 import frederikam.jca.JCA;
@@ -114,6 +115,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "list", new ListCommand());
         CommandRegistry.registerCommand(0x11, "mupdate", new UpdateCommand());
         CommandRegistry.registerCommand(0x11, "select", new SelectCommand());
+        CommandRegistry.registerCommand(0x11, "stop", new StopCommand());
     }
 
     public static void shutdown(int code) {

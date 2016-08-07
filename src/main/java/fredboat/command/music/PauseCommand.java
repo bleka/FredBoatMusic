@@ -13,6 +13,7 @@ public class PauseCommand extends Command {
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         GuildPlayer player = PlayerRegistry.get(guild.getId());
+        player.currentTC = channel;
         if(player.getCurrentAudioSource() == null){
             channel.sendMessage("The player is not currently playing anything.");
         } else if(player.isPaused()){

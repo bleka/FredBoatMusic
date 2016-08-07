@@ -34,6 +34,7 @@ public class PlayCommand extends Command {
 
         SelfInfo self = guild.getJDA().getSelfInfo();
         GuildPlayer player = PlayerRegistry.get(guild.getId());
+        player.currentTC = channel;
 
         player.playOrQueueSong(args[1], channel, invoker);
 
@@ -86,6 +87,7 @@ public class PlayCommand extends Command {
             outMsg.updateMessage(builder.build().getRawContent());
             
             GuildPlayer player = PlayerRegistry.get(guild.getId());
+            player.currentTC = channel;
             player.selections.put(invoker.getId(), new VideoSelection(vids, outMsg));
         }
     }

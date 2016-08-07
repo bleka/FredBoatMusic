@@ -30,5 +30,9 @@ public class PlayerRegistry {
     public static GuildPlayer remove(String k){
         return registry.remove(k);
     }
+
+    public static HashMap<String, GuildPlayer> getRegistry() {
+        return registry;
+    }
     
 }

@@ -16,6 +16,7 @@ public class StopCommand extends Command {
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         if(PermissionUtil.checkPermission(invoker, Permission.MESSAGE_MANAGE, guild)){
             GuildPlayer player = PlayerRegistry.get(guild.getId());
+            player.currentTC = channel;
             int count = player.getAudioQueue().size();
             
             if(player.getCurrentAudioSource() != null){

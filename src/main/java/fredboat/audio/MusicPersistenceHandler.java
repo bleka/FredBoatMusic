@@ -105,6 +105,7 @@ public class MusicPersistenceHandler {
                 TextChannel tc = jda.getTextChannelById(data.getString("tc"));
                 
                 player.joinChannel(vc);
+                player.currentTC = tc;
                 
                 sources.forEach((Object t) -> {
                     String src = (String) t;

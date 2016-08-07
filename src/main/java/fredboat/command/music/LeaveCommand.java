@@ -13,6 +13,7 @@ public class LeaveCommand extends Command {
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         GuildPlayer player = PlayerRegistry.get(guild.getId());
+        player.currentTC = channel;
         player.leaveVoiceChannelRequest(channel, false);
     }
     

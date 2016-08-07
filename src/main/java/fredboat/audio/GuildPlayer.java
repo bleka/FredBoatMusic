@@ -23,6 +23,7 @@ public class GuildPlayer extends MusicPlayer {
     public final JDA jda;
     public final Guild guild;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
+    public TextChannel currentTC;
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;
@@ -182,6 +183,10 @@ public class GuildPlayer extends MusicPlayer {
     
     public VoiceChannel getChannel(){
         return getUserCurrentVoiceChannel(jda.getSelfInfo());
+    }
+    
+    public TextChannel getActiveTextChannel(){
+        return currentTC;
     }
     
 }

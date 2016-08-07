@@ -28,7 +28,7 @@ public class StopCommand extends Command {
                     channel.sendMessage("The queue was already empty.");
                     break;
                 case 1:
-                    channel.sendMessage("The queue has been emptied, `1` song have been removed.");
+                    channel.sendMessage("The queue has been emptied, `1` song has been removed.");
                     break;
                 default:
                     channel.sendMessage("The queue has been emptied, `"+ count +"` songs have been removed.");

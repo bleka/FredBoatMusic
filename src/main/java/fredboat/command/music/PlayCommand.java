@@ -21,7 +21,8 @@ public class PlayCommand extends Command {
     @Override
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         if (args.length < 2) {
-            channel.sendMessage("Proper syntax: ;;play <url-or-search-terms>");
+            //channel.sendMessage("Proper syntax: ;;play <url-or-search-terms>");
+            handleNoArguments(guild, channel, invoker, message);
             return;
         }
 
@@ -40,6 +41,18 @@ public class PlayCommand extends Command {
             message.deleteMessage();
         } catch (Exception ex) {
 
+        }
+    }
+    
+    private void handleNoArguments(Guild guild, TextChannel channel, User invoker, Message message){
+        GuildPlayer player = PlayerRegistry.get(guild.getId());
+        if(player.getCurrentAudioSource() == null){
+            channel.sendMessage("The player is not currently playing anything. Use the following syntax to add a song:\n;;play <url-or-search-terms>");
+        } else if(player.isPlaying()){
+            channel.sendMessage("The player is already playing.");
+        } else {
+            player.play();
+            channel.sendMessage("The player will now play.");
         }
     }
 

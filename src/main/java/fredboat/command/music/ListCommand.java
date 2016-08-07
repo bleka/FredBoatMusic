@@ -16,7 +16,7 @@ public class ListCommand extends Command {
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         GuildPlayer player = PlayerRegistry.get(guild.getId());
         player.currentTC = channel;
-        if (player.getCurrentAudioSource() != null && player.getAudioQueue().isEmpty()) {
+        if (player.getCurrentAudioSource() != null || !player.getAudioQueue().isEmpty()) {
             MessageBuilder mb = new MessageBuilder();
             if (player.getCurrentAudioSource() != null) {
                 String status = player.isPlaying() ? "[PLAYING] " : "[PAUSED] ";

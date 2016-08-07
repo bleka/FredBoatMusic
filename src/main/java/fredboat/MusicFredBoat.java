@@ -1,6 +1,7 @@
 package fredboat;
 
 import fredboat.agent.CarbonAgent;
+import fredboat.audio.MusicPersistenceHandler;
 import fredboat.audio.PlayerRegistry;
 import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
@@ -107,9 +108,12 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "stop", new StopCommand());
         CommandRegistry.registerCommand(0x11, "pause", new PauseCommand());
         CommandRegistry.registerCommand(0x11, "unpause", new UnpauseCommand());
+        
+        MusicPersistenceHandler.reloadPlaylists();
     }
 
     public static void shutdown(int code) {
+        MusicPersistenceHandler.handlePreShutdown(code);
         jdaBot.shutdown(true);
         //if (jedis != null) {
         //    jedis.shutdown();

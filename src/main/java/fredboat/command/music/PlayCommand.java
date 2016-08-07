@@ -47,7 +47,7 @@ public class PlayCommand extends Command {
     
     private void handleNoArguments(Guild guild, TextChannel channel, User invoker, Message message){
         GuildPlayer player = PlayerRegistry.get(guild.getId());
-        if(player.getCurrentAudioSource() == null){
+        if(player.getCurrentAudioSource() == null && player.getAudioQueue().isEmpty()){
             channel.sendMessage("The player is not currently playing anything. Use the following syntax to add a song:\n;;play <url-or-search-terms>");
         } else if(player.isPlaying()){
             channel.sendMessage("The player is already playing.");

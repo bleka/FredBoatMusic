@@ -36,7 +36,10 @@ public class GuildPlayer extends MusicPlayer {
     
     public void joinChannel(User usr) throws MessagingException {
         VoiceChannel targetChannel = getUserCurrentVoiceChannel(usr);
-
+        joinChannel(targetChannel);
+    }
+        
+    public void joinChannel(VoiceChannel targetChannel) throws MessagingException {
         if (targetChannel == null) {
             throw new MessagingException("You must join a voice channel first.");
         }
@@ -94,9 +97,13 @@ public class GuildPlayer extends MusicPlayer {
         return null;
     }
     
+    public void playOrQueueSong(String url, TextChannel channel){
+        playOrQueueSong(url, channel, null);
+    }
+    
     public void playOrQueueSong(String url, TextChannel channel, User invoker){
         //Check that we are in the same voice channel
-        if (getUserCurrentVoiceChannel(invoker) != getChannel()) {
+        if (invoker != null && getUserCurrentVoiceChannel(invoker) != getChannel()) {
             joinChannel(invoker);
         }
 

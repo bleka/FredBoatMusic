@@ -14,7 +14,7 @@ public class UnpauseCommand extends Command {
     public void onInvoke(Guild guild, TextChannel channel, User invoker, Message message, String[] args) {
         GuildPlayer player = PlayerRegistry.get(guild.getId());
         player.currentTC = channel;
-        if(player.getCurrentAudioSource() == null){
+        if(player.getCurrentAudioSource() == null && player.getAudioQueue().isEmpty()){
             channel.sendMessage("The player is not currently playing anything.");
         } else if(!player.isPaused()){
             channel.sendMessage("The player is not paused.");

@@ -51,33 +51,37 @@ public class MusicPersistenceHandler {
         }
 
         for (String gId : reg.keySet()) {
-            GuildPlayer player = reg.get(gId);
-            Guild guild = jda.getGuildById(gId);
-
-            if (player.getCurrentAudioSource() == null) {
-                continue;//Nothing to see here
-            }
-
-            player.getActiveTextChannel().sendMessage(msg);
-
-            JSONObject data = new JSONObject();
-            data.put("vc", player.getUserCurrentVoiceChannel(jda.getSelfInfo()).getId());
-            data.put("tc", player.getActiveTextChannel().getId());
-            data.put("isPaused", player.isPaused());
-
-            ArrayList<String> srcs = new ArrayList<>();
-            srcs.add(player.getCurrentAudioSource().getSource());
-
-            for (AudioSource src : player.getAudioQueue()) {
-                srcs.add(src.getSource());
-            }
-
-            data.put("sources", srcs);
-
             try {
-                FileUtils.writeStringToFile(new File(dir, gId), data.toString());
-            } catch (IOException ex) {
-                player.getActiveTextChannel().sendMessage("Error occured when saving persistence file: " + ex.getMessage());
+                GuildPlayer player = reg.get(gId);
+                Guild guild = jda.getGuildById(gId);
+                
+                if (player.getCurrentAudioSource() == null) {
+                    continue;//Nothing to see here
+                }
+                
+                player.getActiveTextChannel().sendMessage(msg);
+                
+                JSONObject data = new JSONObject();
+                data.put("vc", player.getUserCurrentVoiceChannel(jda.getSelfInfo()).getId());
+                data.put("tc", player.getActiveTextChannel().getId());
+                data.put("isPaused", player.isPaused());
+                
+                ArrayList<String> srcs = new ArrayList<>();
+                srcs.add(player.getCurrentAudioSource().getSource());
+                
+                for (AudioSource src : player.getAudioQueue()) {
+                    srcs.add(src.getSource());
+                }
+                
+                data.put("sources", srcs);
+                
+                try {
+                    FileUtils.writeStringToFile(new File(dir, gId), data.toString());
+                } catch (IOException ex) {
+                    player.getActiveTextChannel().sendMessage("Error occured when saving persistence file: " + ex.getMessage());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
     }

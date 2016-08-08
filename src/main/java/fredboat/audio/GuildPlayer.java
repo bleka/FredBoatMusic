@@ -200,7 +200,13 @@ public class GuildPlayer extends MusicPlayer {
     }
     
     public TextChannel getActiveTextChannel(){
-        return currentTC;
+        if(currentTC != null){
+            return currentTC;
+        } else {
+            System.err.println("No return currentTC in " + guild + "! Returning public channel...");
+            return guild.getPublicChannel();
+        }
+        
     }
     
 }

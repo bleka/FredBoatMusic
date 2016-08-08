@@ -64,3 +64,4 @@ target/
 /ffplay.exe
 /ffprobe.exe
 /youtube-dl
+/music_persistence/

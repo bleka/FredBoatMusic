@@ -132,9 +132,13 @@ public class GuildPlayer extends MusicPlayer {
             }
         } else if (playlist.getSources().size() == 1) {
             AudioSource source = playlist.getSources().get(0);
-            if (source.getInfo().getError() != null) {
+            AudioInfo info = source.getInfo();
+            if (info.getError() != null) {
                 manager.closeAudioConnection();
-                throw new MessagingException("Could not load URL: " + source.getInfo().getError());
+                throw new MessagingException("Could not load URL: " + info.getError());
+            }
+            if(info.isLive()){
+                throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
             }
             this.getAudioQueue().add(source);
             if (this.isPlaying()) {
@@ -153,11 +157,14 @@ public class GuildPlayer extends MusicPlayer {
             }
             for (AudioSource source : playlist.getSources()) {
                 i++;
-                if (source.getInfo().getError() == null) {
+                AudioInfo info = source.getInfo();
+                if (info.getError() != null) {
+                    channel.sendMessage("Failed to queue #" + i + ": " + info.getError());
+                } else if(info.isLive()){
+                    throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
+                } else {
                     successfullyAdded++;
                     this.getAudioQueue().add(source);
-                } else {
-                    channel.sendMessage("Failed to queue #" + i + ": " + source.getInfo().getError());
                 }
 
                 //Begin to play if we are not already and if we have at least one source

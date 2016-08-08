@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 public class MusicPersistenceHandler {
 
+    private static boolean isFirst = true;//Used for loading songs
+    
     public static void handlePreShutdown(int code) {
         JDA jda = MusicFredBoat.jdaBot;
 
@@ -107,13 +109,14 @@ public class MusicPersistenceHandler {
                 player.joinChannel(vc);
                 player.currentTC = tc;
                 
+                
                 sources.forEach((Object t) -> {
                     String src = (String) t;
                     AudioSource aud = new RemoteSource(src);
                     
-                    boolean isFirst = player.isPlaying() == false && player.getAudioQueue().isEmpty();
-                    
+                    //System.out.println(player.getAudioQueue().toString()+ " : " + (player.isPlaying() == false));
                     player.getAudioQueue().add(aud);
+                    
                     if(isFirst){
                         if(isPaused){
                             tc.sendMessage("Reloading playlist. The player is still paused.");
@@ -124,7 +127,9 @@ public class MusicPersistenceHandler {
                             player.play();
                         }
                     }
+                    isFirst = false;
                 });
+                isFirst = true;
                 tc.sendMessage("Finished reloading playlist.:ok_hand::skin-tone-3:");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MusicPersistenceHandler.class.getName()).log(Level.SEVERE, null, ex);

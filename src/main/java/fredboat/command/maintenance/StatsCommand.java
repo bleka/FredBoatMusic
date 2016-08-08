@@ -3,7 +3,6 @@ package fredboat.command.maintenance;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import fredboat.commandmeta.CommandManager;
-import fredboat.commandmeta.ICommand;
 import fredboat.MusicFredBoat;
 import fredboat.commandmeta.Command;
 import net.dv8tion.jda.entities.Guild;
@@ -11,10 +10,7 @@ import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
 import fredboat.util.TextUtils;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.dv8tion.jda.JDAInfo;
-import net.dv8tion.jda.Permission;
 import org.json.JSONException;
 import org.json.JSONObject;
 

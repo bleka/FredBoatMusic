@@ -95,6 +95,7 @@ public class MusicFredBoat {
         //Commands
         CommandRegistry.registerCommand(0x01, "mexit", new ExitCommand());
         CommandRegistry.registerCommand(0x11, "mrestart", new RestartCommand());
+        CommandRegistry.registerCommand(0x11, "stats", new StatsCommand());
         CommandRegistry.registerCommand(0x11, "play", new PlayCommand());
         CommandRegistry.registerCommand(0x11, "minfo", new MusicInfoCommand());
         CommandRegistry.registerCommand(0x11, "meval", new EvalCommand());

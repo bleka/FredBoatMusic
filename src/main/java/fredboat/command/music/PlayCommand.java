@@ -51,6 +51,8 @@ public class PlayCommand extends Command {
             channel.sendMessage("The player is not currently playing anything. Use the following syntax to add a song:\n;;play <url-or-search-terms>");
         } else if(player.isPlaying()){
             channel.sendMessage("The player is already playing.");
+        } else if(player.getUsersInVC().isEmpty()){
+            channel.sendMessage("There are no users in the voice chat.");
         } else {
             player.play();
             channel.sendMessage("The player will now play.");

@@ -1,7 +1,9 @@
 package fredboat.audio;
 
 import fredboat.commandmeta.MessagingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
@@ -18,7 +20,7 @@ import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
 
 public class GuildPlayer extends MusicPlayer {
-    
+
     public final SelfInfo self;
     public final JDA jda;
     public final Guild guild;
@@ -29,16 +31,16 @@ public class GuildPlayer extends MusicPlayer {
         this.jda = jda;
         this.guild = guild;
         this.self = jda.getSelfInfo();
-        
+
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(this);
     }
-    
+
     public void joinChannel(User usr) throws MessagingException {
         VoiceChannel targetChannel = getUserCurrentVoiceChannel(usr);
         joinChannel(targetChannel);
     }
-        
+
     public void joinChannel(VoiceChannel targetChannel) throws MessagingException {
         if (targetChannel == null) {
             throw new MessagingException("You must join a voice channel first.");
@@ -73,11 +75,11 @@ public class GuildPlayer extends MusicPlayer {
         }*/
         System.out.println("Connected to voice channel " + targetChannel);
     }
-    
-    public void leaveVoiceChannelRequest(TextChannel channel, boolean silent){
+
+    public void leaveVoiceChannelRequest(TextChannel channel, boolean silent) {
         AudioManager manager = guild.getAudioManager();
-        if(!silent){
-            if(manager.getConnectedChannel() == null){
+        if (!silent) {
+            if (manager.getConnectedChannel() == null) {
                 channel.sendMessage("Not currently in a channel.");
             } else {
                 channel.sendMessage("Left channel " + getChannel().getName() + ".");
@@ -85,23 +87,23 @@ public class GuildPlayer extends MusicPlayer {
         }
         manager.closeAudioConnection();
     }
-    
-    public VoiceChannel getUserCurrentVoiceChannel(User usr){
-        for(VoiceChannel chn : guild.getVoiceChannels()){
-            for(User userInChannel : chn.getUsers()){
-                if(usr.getId().equals(userInChannel.getId())){
+
+    public VoiceChannel getUserCurrentVoiceChannel(User usr) {
+        for (VoiceChannel chn : guild.getVoiceChannels()) {
+            for (User userInChannel : chn.getUsers()) {
+                if (usr.getId().equals(userInChannel.getId())) {
                     return chn;
                 }
             }
         }
         return null;
     }
-    
-    public void playOrQueueSong(String url, TextChannel channel){
+
+    public void playOrQueueSong(String url, TextChannel channel) {
         playOrQueueSong(url, channel, null);
     }
-    
-    public void playOrQueueSong(String url, TextChannel channel, User invoker){
+
+    public void playOrQueueSong(String url, TextChannel channel, User invoker) {
         //Check that we are in the same voice channel
         if (invoker != null && getUserCurrentVoiceChannel(invoker) != getChannel()) {
             joinChannel(invoker);
@@ -137,7 +139,7 @@ public class GuildPlayer extends MusicPlayer {
                 manager.closeAudioConnection();
                 throw new MessagingException("Could not load URL: " + info.getError());
             }
-            if(info.isLive()){
+            if (info.isLive()) {
                 throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
             }
             this.getAudioQueue().add(source);
@@ -160,19 +162,19 @@ public class GuildPlayer extends MusicPlayer {
                 AudioInfo info = source.getInfo();
                 if (info.getError() != null) {
                     channel.sendMessage("Failed to queue #" + i + ": " + info.getError());
-                } else if(info.isLive()){
+                } else if (info.isLive()) {
                     throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
                 } else {
                     successfullyAdded++;
                     this.getAudioQueue().add(source);
                 }
 
-                //Begin to play if we are not already and if we have at least one source
+                //Begin to play if we are not already and we have at least one source
                 if (this.isPlaying() == false && this.getAudioQueue().isEmpty() == false) {
                     this.play();
                 }
-                
-                if(successfullyAdded == 30){
+
+                if (successfullyAdded == 30) {
                     break;
                 }
             }
@@ -194,19 +196,38 @@ public class GuildPlayer extends MusicPlayer {
             }
         }
     }
-    
-    public VoiceChannel getChannel(){
+
+    public VoiceChannel getChannel() {
         return getUserCurrentVoiceChannel(jda.getSelfInfo());
     }
-    
-    public TextChannel getActiveTextChannel(){
-        if(currentTC != null){
+
+    public TextChannel getActiveTextChannel() {
+        if (currentTC != null) {
             return currentTC;
         } else {
-            System.err.println("No return currentTC in " + guild + "! Returning public channel...");
+            System.err.println("No currentTC in " + guild + "! Returning public channel...");
             return guild.getPublicChannel();
         }
-        
+
     }
-    
+
+    /**
+     * Returns users who are not bots
+     */
+    public ArrayList<User> getUsersInVC() {
+        VoiceChannel vc = getChannel();
+        if(vc == null){
+            return new ArrayList<>();
+        }
+        
+        List<User> allUsers = vc.getUsers();
+        ArrayList<User> nonBots = new ArrayList<>();
+        for (User usr : allUsers) {
+            if (!usr.isBot()) {
+                nonBots.add(usr);
+            }
+        }
+        return nonBots;
+    }
+
 }

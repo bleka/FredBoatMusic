@@ -2,6 +2,7 @@ package fredboat.audio;
 
 import java.util.HashMap;
 import net.dv8tion.jda.JDA;
+import net.dv8tion.jda.entities.Guild;
 
 public class PlayerRegistry {
     
@@ -15,6 +16,10 @@ public class PlayerRegistry {
     
     public static void put(String k, GuildPlayer v){
         registry.put(k, v);
+    }
+    
+    public static GuildPlayer get(Guild guild){
+        return get(guild.getId());
     }
     
     public static GuildPlayer get(String k){

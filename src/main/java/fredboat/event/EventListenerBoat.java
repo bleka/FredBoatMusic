@@ -22,7 +22,10 @@ import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 import fredboat.MusicFredBoat;
 import static fredboat.MusicFredBoat.jdaBot;
+import fredboat.audio.GuildPlayer;
+import fredboat.audio.PlayerRegistry;
 import java.util.regex.Matcher;
+import net.dv8tion.jda.events.voice.VoiceLeaveEvent;
 
 public class EventListenerBoat extends ListenerAdapter {
 
@@ -32,7 +35,7 @@ public class EventListenerBoat extends ListenerAdapter {
     public final int scope;
     public final String prefix;
     private final Pattern commandNamePrefix;
-    
+
     public static int messagesReceived = 0;
 
     public EventListenerBoat(int scope, String prefix) {
@@ -44,7 +47,7 @@ public class EventListenerBoat extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         messagesReceived++;
-        
+
         if (event.getPrivateChannel() != null) {
             System.out.println("PRIVATE" + " \t " + event.getAuthor().getUsername() + " \t " + event.getMessage().getRawContent());
             return;
@@ -127,6 +130,16 @@ public class EventListenerBoat extends ListenerAdapter {
     @Override
     public void onReconnect(ReconnectedEvent event) {
         jdaBot.getAccountManager().setGame("music");
+    }
+
+    /* music related */
+    @Override
+    public void onVoiceLeave(VoiceLeaveEvent event) {
+        GuildPlayer player = PlayerRegistry.get(event.getGuild());
+        if (player.getUsersInVC().isEmpty() && player.isPaused() == false) {
+                player.pause();
+                player.getActiveTextChannel().sendMessage("All users have left the voice channel. The player has been paused.");
+        }
     }
 
 }

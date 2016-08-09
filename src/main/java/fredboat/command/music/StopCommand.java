@@ -23,7 +23,9 @@ public class StopCommand extends Command {
                 count++;
             }
             
-            player.stop();
+            player.getAudioQueue().clear();
+            player.skipToNext();
+            
             switch (count) {
                 case 0:
                     channel.sendMessage("The queue was already empty.");

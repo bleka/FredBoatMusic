@@ -4,6 +4,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import fredboat.commandmeta.CommandManager;
 import fredboat.MusicFredBoat;
+import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
@@ -50,6 +51,7 @@ public class StatsCommand extends Command {
 
         str = str + "\n----------\n\n";
 
+        str = str + "Guilds playing music in:   " + PlayerRegistry.getPlayingPlayers().size() + "\n";
         str = str + "Known servers:             " + guild.getJDA().getGuilds().size() + "\n";
         str = str + "Known text channels:       " + guild.getJDA().getTextChannels().size() + "\n";
         str = str + "Known users in servers:    " + guild.getJDA().getUsers().size() + "\n";

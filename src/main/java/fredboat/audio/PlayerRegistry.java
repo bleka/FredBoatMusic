@@ -1,5 +1,6 @@
 package fredboat.audio;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
@@ -38,6 +39,18 @@ public class PlayerRegistry {
 
     public static HashMap<String, GuildPlayer> getRegistry() {
         return registry;
+    }
+    
+    public static ArrayList<GuildPlayer> getPlayingPlayers(){
+        ArrayList<GuildPlayer> plrs = new ArrayList<>();
+        
+        for(GuildPlayer plr : registry.values()){
+            if(plr.isPlaying()){
+                plrs.add(plr);
+            }
+        }
+        
+        return plrs;
     }
     
 }

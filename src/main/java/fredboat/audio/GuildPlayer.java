@@ -26,6 +26,7 @@ public class GuildPlayer extends MusicPlayer {
     public final Guild guild;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
     public TextChannel currentTC;
+    public long lastTimePaused = System.currentTimeMillis();
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;
@@ -228,6 +229,12 @@ public class GuildPlayer extends MusicPlayer {
             }
         }
         return nonBots;
+    }
+
+    @Override
+    public void pause() {
+        lastTimePaused = System.currentTimeMillis();
+        super.pause(); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

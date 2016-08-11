@@ -10,5 +10,10 @@ public class MusicGC extends Thread {
         super();
         this.jda = jda;
     }
+
+    @Override
+    public void run() {
+        
+    }
     
 }

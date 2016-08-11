@@ -236,5 +236,9 @@ public class GuildPlayer extends MusicPlayer {
         lastTimePaused = System.currentTimeMillis();
         super.pause(); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    public long getMillisSincePause(){
+        return System.currentTimeMillis() - lastTimePaused;
+    }
 
 }

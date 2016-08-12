@@ -66,6 +66,12 @@ public class MusicFredBoat {
         System.out.println("JDA version:\t" + JDAInfo.VERSION);
 
         PlayerRegistry.init(jdaBot);
+        
+        //Start statistics agent
+        if (!IS_BETA) {
+            CarbonAgent carbon = new CarbonAgent(jdaBot, "music", true);
+            carbon.start();
+        }
     }
 
     public static void init() {
@@ -107,12 +113,6 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "getid", new GetIdCommand());
         
         MusicPersistenceHandler.reloadPlaylists();
-        
-        //Start statistics agent
-        if (!IS_BETA) {
-            CarbonAgent carbon = new CarbonAgent(jdaBot, "music", true);
-            carbon.start();
-        }
         
         //Start music GC
         MusicGC mgc = new MusicGC(jdaBot);

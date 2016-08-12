@@ -111,6 +111,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "pause", new PauseCommand());
         CommandRegistry.registerCommand(0x11, "unpause", new UnpauseCommand());
         CommandRegistry.registerCommand(0x11, "getid", new GetIdCommand());
+        CommandRegistry.registerCommand(0x11, "shuffle", new ShuffleCommand());
         
         MusicPersistenceHandler.reloadPlaylists();
         

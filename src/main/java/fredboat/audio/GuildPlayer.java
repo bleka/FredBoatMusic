@@ -21,7 +21,6 @@ import net.dv8tion.jda.utils.PermissionUtil;
 
 public class GuildPlayer extends MusicPlayer {
 
-    public final SelfInfo self;
     public final JDA jda;
     public final Guild guild;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
@@ -31,7 +30,6 @@ public class GuildPlayer extends MusicPlayer {
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;
         this.guild = guild;
-        this.self = jda.getSelfInfo();
 
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(this);
@@ -50,11 +48,11 @@ public class GuildPlayer extends MusicPlayer {
         /*if (guild.getVoiceStatusOfUser(self).inVoiceChannel()) {
             throw new MessagingException("I need to leave my current channel first.");
         }*/
-        if (PermissionUtil.checkPermission(self, Permission.VOICE_CONNECT, targetChannel) == false) {
+        if (PermissionUtil.checkPermission(jda.getSelfInfo(), Permission.VOICE_CONNECT, targetChannel) == false) {
             throw new MessagingException("I am not permitted to connect to that voice channel.");
         }
 
-        if (PermissionUtil.checkPermission(self, Permission.VOICE_SPEAK, targetChannel) == false) {
+        if (PermissionUtil.checkPermission(jda.getSelfInfo(), Permission.VOICE_SPEAK, targetChannel) == false) {
             throw new MessagingException("I am not permitted to play music in that voice channel.");
         }
 
@@ -243,7 +241,7 @@ public class GuildPlayer extends MusicPlayer {
 
     @Override
     public String toString() {
-        return "[Player:" + guild.getId()+"]";
+        return "[GP:" + guild.getId()+"]";
     }
 
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.Permission;
 import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.SelfInfo;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.entities.VoiceChannel;
@@ -22,14 +21,14 @@ import net.dv8tion.jda.utils.PermissionUtil;
 public class GuildPlayer extends MusicPlayer {
 
     public final JDA jda;
-    public final Guild guild;
+    public final String guildId;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
     public TextChannel currentTC;
     public long lastTimePaused = System.currentTimeMillis();
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;
-        this.guild = guild;
+        this.guildId = guild.getId();
 
         AudioManager manager = guild.getAudioManager();
         manager.setSendingHandler(this);
@@ -56,7 +55,7 @@ public class GuildPlayer extends MusicPlayer {
             throw new MessagingException("I am not permitted to play music in that voice channel.");
         }
 
-        AudioManager manager = guild.getAudioManager();
+        AudioManager manager = getGuild().getAudioManager();
         if (manager.getConnectedChannel() != null) {
             manager.moveAudioConnection(targetChannel);
         } else {
@@ -76,7 +75,7 @@ public class GuildPlayer extends MusicPlayer {
     }
 
     public void leaveVoiceChannelRequest(TextChannel channel, boolean silent) {
-        AudioManager manager = guild.getAudioManager();
+        AudioManager manager = getGuild().getAudioManager();
         if (!silent) {
             if (manager.getConnectedChannel() == null) {
                 channel.sendMessage("Not currently in a channel.");
@@ -88,7 +87,7 @@ public class GuildPlayer extends MusicPlayer {
     }
 
     public VoiceChannel getUserCurrentVoiceChannel(User usr) {
-        for (VoiceChannel chn : guild.getVoiceChannels()) {
+        for (VoiceChannel chn : getGuild().getVoiceChannels()) {
             for (User userInChannel : chn.getUsers()) {
                 if (usr.getId().equals(userInChannel.getId())) {
                     return chn;
@@ -109,7 +108,7 @@ public class GuildPlayer extends MusicPlayer {
         }
 
         //Now we will either have thrown an exception or be in the same channel
-        AudioManager manager = guild.getAudioManager();
+        AudioManager manager = getGuild().getAudioManager();
         manager.setSendingHandler(this);
 
         Playlist playlist;
@@ -204,8 +203,8 @@ public class GuildPlayer extends MusicPlayer {
         if (currentTC != null) {
             return currentTC;
         } else {
-            System.err.println("No currentTC in " + guild + "! Returning public channel...");
-            return guild.getPublicChannel();
+            System.err.println("No currentTC in " + getGuild() + "! Returning public channel...");
+            return getGuild().getPublicChannel();
         }
 
     }
@@ -241,7 +240,11 @@ public class GuildPlayer extends MusicPlayer {
 
     @Override
     public String toString() {
-        return "[GP:" + guild.getId()+"]";
+        return "[GP:" + getGuild().getId()+"]";
+    }
+    
+    public Guild getGuild() {
+        return jda.getGuildById(guildId);
     }
 
 }

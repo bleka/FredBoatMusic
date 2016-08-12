@@ -16,7 +16,7 @@ public class UnpauseCommand extends Command {
         player.currentTC = channel;
         if(player.getCurrentAudioSource() == null && player.getAudioQueue().isEmpty()){
             channel.sendMessage("The player is not currently playing anything.");
-        } else if(!player.isPaused()){
+        } else if(!player.isPaused() && !player.isStopped()){
             channel.sendMessage("The player is not paused.");
         } else if(player.getUsersInVC().isEmpty() && player.isPaused()){
             channel.sendMessage("There are no users in the voice chat.");

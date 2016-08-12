@@ -241,4 +241,9 @@ public class GuildPlayer extends MusicPlayer {
         return System.currentTimeMillis() - lastTimePaused;
     }
 
+    @Override
+    public String toString() {
+        return "[Player:" + guild.getId()+"]";
+    }
+
 }

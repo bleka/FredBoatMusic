@@ -26,6 +26,7 @@ public class GuildPlayer extends MusicPlayer {
     public TextChannel currentTC;
     public long lastTimePaused = System.currentTimeMillis();
     public final PlayerEventListener eventListener;
+    public String lastYoutubeVideoId = null;
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;

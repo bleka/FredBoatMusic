@@ -136,9 +136,8 @@ public class EventListenerBoat extends ListenerAdapter {
     @Override
     public void onVoiceLeave(VoiceLeaveEvent event) {
         GuildPlayer player = PlayerRegistry.get(event.getGuild());
-        if (player.getUsersInVC().isEmpty() && player.isPaused() == false) {
-                player.pause();
-                player.getActiveTextChannel().sendMessage("All users have left the voice channel. The player has been paused.");
+        if (player.getUsersInVC().isEmpty() && player.isPaused() == false && player.isStopped()) {
+            player.getActiveTextChannel().sendMessage("All users have left the voice channel. The player has been paused.");
         }
     }
 

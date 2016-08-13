@@ -139,7 +139,7 @@ public class EventListenerBoat extends ListenerAdapter {
         
         if(player == null) return;
         
-        if (player.getUsersInVC().isEmpty() && player.isPaused() == false && player.isStopped()) {
+        if (player.getUsersInVC().isEmpty() && player.isPaused() == false && player.isStopped() == false) {
             try {
                 player.pause();
             } catch (Exception ex) {

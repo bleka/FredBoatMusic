@@ -139,7 +139,10 @@ public class EventListenerBoat extends ListenerAdapter {
         
         if(player == null) return;
         
-        if (player.getUsersInVC().isEmpty() && player.isPaused() == false && player.isStopped() == false) {
+        if (player.getUsersInVC().isEmpty()
+                && player.getUserCurrentVoiceChannel(jdaBot.getSelfInfo()) == event.getOldChannel()
+                && player.isPaused() == false
+                && player.isStopped() == false) {
             try {
                 player.pause();
             } catch (Exception ex) {

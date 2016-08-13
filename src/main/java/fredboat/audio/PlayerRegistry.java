@@ -33,6 +33,17 @@ public class PlayerRegistry {
         return player;
     }
     
+    public static GuildPlayer getExisting(Guild guild){
+        return getExisting(guild.getId());
+    }
+    
+    public static GuildPlayer getExisting(String k){
+        if(registry.containsKey(k)){
+            return get(k);
+        }
+        return null;
+    }
+    
     public static GuildPlayer remove(String k){
         return registry.remove(k);
     }

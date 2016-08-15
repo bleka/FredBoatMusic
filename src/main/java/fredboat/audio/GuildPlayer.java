@@ -21,7 +21,7 @@ import net.dv8tion.jda.utils.PermissionUtil;
 public class GuildPlayer extends MusicPlayer {
 
     public static final int MAX_PLAYLIST_ENTRIES = 20;
-    
+
     public final JDA jda;
     public final String guildId;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
@@ -29,7 +29,7 @@ public class GuildPlayer extends MusicPlayer {
     public long lastTimePaused = System.currentTimeMillis();
     public final PlayerEventListener eventListener;
     public String lastYoutubeVideoId = null;
-    
+
     private long playlistTimeoutEnds = 0L;
 
     public GuildPlayer(JDA jda, Guild guild) {
@@ -160,14 +160,17 @@ public class GuildPlayer extends MusicPlayer {
             channel.sendMessage("Found a playlist with " + playlist.getSources().size() + " entries");
             int successfullyAdded = 0;
             int i = 0;
-            
+
             //Check if the player is under cooldown
-            if(playlistTimeoutEnds > System.currentTimeMillis()){
-                throw new MessagingException("");
+            if (playlistTimeoutEnds > System.currentTimeMillis()) {
+                int secsToWait = (int) ((playlistTimeoutEnds - System.currentTimeMillis()) / 1000);
+                throw new MessagingException("You are adding playlists too fast! Please wait " + secsToWait + " seconds before adding a new playlist. Longer playlists results in longer cooldowns.");
             }
+
             if (playlist.getSources().size() > MAX_PLAYLIST_ENTRIES) {
                 channel.sendMessage("This playlist contains too many entries. Adding the first " + MAX_PLAYLIST_ENTRIES + " instead...");
             }
+
             for (AudioSource source : playlist.getSources()) {
                 i++;
                 AudioInfo info = source.getInfo();
@@ -189,6 +192,8 @@ public class GuildPlayer extends MusicPlayer {
                     break;
                 }
             }
+
+            playlistTimeoutEnds = System.currentTimeMillis() + 20000 * successfullyAdded;
 
             switch (successfullyAdded) {
                 case 0:
@@ -227,10 +232,10 @@ public class GuildPlayer extends MusicPlayer {
      */
     public ArrayList<User> getUsersInVC() {
         VoiceChannel vc = getChannel();
-        if(vc == null){
+        if (vc == null) {
             return new ArrayList<>();
         }
-        
+
         List<User> allUsers = vc.getUsers();
         ArrayList<User> nonBots = new ArrayList<>();
         for (User usr : allUsers) {
@@ -240,16 +245,16 @@ public class GuildPlayer extends MusicPlayer {
         }
         return nonBots;
     }
-    
-    public long getMillisSincePause(){
+
+    public long getMillisSincePause() {
         return System.currentTimeMillis() - lastTimePaused;
     }
 
     @Override
     public String toString() {
-        return "[GP:" + getGuild().getId()+"]";
+        return "[GP:" + getGuild().getId() + "]";
     }
-    
+
     public Guild getGuild() {
         return jda.getGuildById(guildId);
     }

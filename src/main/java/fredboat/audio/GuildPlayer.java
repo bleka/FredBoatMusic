@@ -29,6 +29,8 @@ public class GuildPlayer extends MusicPlayer {
     public long lastTimePaused = System.currentTimeMillis();
     public final PlayerEventListener eventListener;
     public String lastYoutubeVideoId = null;
+    
+    private long playlistTimeoutEnds = 0L;
 
     public GuildPlayer(JDA jda, Guild guild) {
         this.jda = jda;
@@ -158,6 +160,11 @@ public class GuildPlayer extends MusicPlayer {
             channel.sendMessage("Found a playlist with " + playlist.getSources().size() + " entries");
             int successfullyAdded = 0;
             int i = 0;
+            
+            //Check if the player is under cooldown
+            if(playlistTimeoutEnds > System.currentTimeMillis()){
+                throw new MessagingException("");
+            }
             if (playlist.getSources().size() > MAX_PLAYLIST_ENTRIES) {
                 channel.sendMessage("This playlist contains too many entries. Adding the first " + MAX_PLAYLIST_ENTRIES + " instead...");
             }

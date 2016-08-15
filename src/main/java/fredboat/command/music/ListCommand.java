@@ -33,6 +33,7 @@ public class ListCommand extends Command {
                 if (i == 10) {
                     break;
                 }
+                i++;
             }
 
             mb.appendString("\n\nThere are a total of ")

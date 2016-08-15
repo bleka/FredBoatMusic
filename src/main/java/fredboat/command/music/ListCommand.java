@@ -35,9 +35,11 @@ public class ListCommand extends Command {
                 }
                 i++;
             }
+            
+            int add = player.getCurrentAudioSource() != null ? 1 : 0;
 
             mb.appendString("\n\nThere are a total of ")
-                    .appendString(String.valueOf(player.getAudioQueue().size()), MessageBuilder.Formatting.BOLD)
+                    .appendString(String.valueOf(player.getAudioQueue().size() + add), MessageBuilder.Formatting.BOLD)
                     .appendString(" queued songs.");
 
             channel.sendMessage(mb.build());

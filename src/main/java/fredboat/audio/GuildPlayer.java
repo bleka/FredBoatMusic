@@ -20,6 +20,8 @@ import net.dv8tion.jda.utils.PermissionUtil;
 
 public class GuildPlayer extends MusicPlayer {
 
+    public static final int MAX_PLAYLIST_ENTRIES = 20;
+    
     public final JDA jda;
     public final String guildId;
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
@@ -156,8 +158,8 @@ public class GuildPlayer extends MusicPlayer {
             channel.sendMessage("Found a playlist with " + playlist.getSources().size() + " entries");
             int successfullyAdded = 0;
             int i = 0;
-            if (playlist.getSources().size() > 30) {
-                channel.sendMessage("This playlist contains too many entries. Adding the first 30 instead...");
+            if (playlist.getSources().size() > MAX_PLAYLIST_ENTRIES) {
+                channel.sendMessage("This playlist contains too many entries. Adding the first " + MAX_PLAYLIST_ENTRIES + " instead...");
             }
             for (AudioSource source : playlist.getSources()) {
                 i++;
@@ -176,7 +178,7 @@ public class GuildPlayer extends MusicPlayer {
                     this.play();
                 }
 
-                if (successfullyAdded == 30) {
+                if (successfullyAdded == MAX_PLAYLIST_ENTRIES) {
                     break;
                 }
             }

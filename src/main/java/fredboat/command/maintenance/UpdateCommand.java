@@ -43,7 +43,7 @@ public class UpdateCommand extends Command implements ICommandOwnerRestricted {
 
             msg = msg.updateMessage(msg.getRawContent() + "👌🏽\n\nRunning `mvn package shade:shade`... ");
             File updateDir = new File("./update");
-            Process mvnBuild = rt.exec("/home/frederik/mvn/bin/mvn -f " + updateDir.getAbsolutePath() + "/pom.xml package shade:shade");
+            Process mvnBuild = rt.exec("mvn -f " + updateDir.getAbsolutePath() + "/pom.xml package shade:shade");
             if (mvnBuild.waitFor(300, TimeUnit.SECONDS) == false) {
                 msg = msg.updateMessage(msg.getRawContent() + "[:anger: timed out]\n\n");
                 throw new RuntimeException("Operation timed out: mvn package shade:shade");

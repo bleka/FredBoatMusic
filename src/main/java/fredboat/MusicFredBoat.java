@@ -9,6 +9,7 @@ import fredboat.command.maintenance.*;
 import fredboat.command.util.HelpCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
+import fredboat.event.EventLogger;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +22,7 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.JDAInfo;
 import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.entities.impl.JDAImpl;
 import org.json.JSONObject;
 
 public class MusicFredBoat {
@@ -78,7 +80,11 @@ public class MusicFredBoat {
         //Initialise event listeners
         listenerBot = new EventListenerBoat(0x01, PREFIX);
 
-        jdaBot = new JDABuilder().addListener(listenerBot).setBotToken(accountToken).buildAsync();
+        jdaBot = new JDABuilder()
+                .addListener(listenerBot)
+                .addListener(new EventLogger("216689009110417408"))
+                .setBotToken(accountToken)
+                .buildAsync();
         System.out.println("JDA version:\t" + JDAInfo.VERSION);
 
         PlayerRegistry.init(jdaBot);
@@ -141,6 +147,13 @@ public class MusicFredBoat {
 
     public static void shutdown(int code) {
         MusicPersistenceHandler.handlePreShutdown(code);
+        
+        for (Object listener : ((JDAImpl) jdaBot).getEventManager().getRegisteredListeners()){
+            if(listener instanceof EventLogger){
+                ((EventLogger) listener).onExit(code);
+            }
+        }
+        
         jdaBot.shutdown(true);
         //if (jedis != null) {
         //    jedis.shutdown();

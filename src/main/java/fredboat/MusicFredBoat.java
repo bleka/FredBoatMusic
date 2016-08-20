@@ -22,6 +22,12 @@ import org.json.JSONObject;
 
 public class MusicFredBoat {
 
+    public static final String MAIN_BOT_ID = "150376112944447488";
+    public static final String MUSIC_BOT_ID = "150376112944447488";
+    public static final String BETA_BOT_ID = "152691313123393536";
+    
+    public static final String OTHER_BOT_ID = MAIN_BOT_ID;
+    
     public static final boolean IS_BETA = System.getProperty("os.name").toLowerCase().contains("windows");
     public static volatile JDA jdaBot;
     public static final String PREFIX = IS_BETA ? "¤" : ";;";

@@ -6,12 +6,15 @@ import fredboat.audio.MusicPersistenceHandler;
 import fredboat.audio.PlayerRegistry;
 import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
+import fredboat.command.util.HelpCommand;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 import javax.security.auth.login.LoginException;
 import net.dv8tion.jda.JDA;
@@ -42,6 +45,8 @@ public class MusicFredBoat {
 
     public static String myUserId = "";
     public static volatile User myUser;
+    
+    public static String helpMsg = "";
 
     public static int readyEvents = 0;
     public static final int READY_EVENTS_REQUIRED = 1;
@@ -60,6 +65,15 @@ public class MusicFredBoat {
         googleServerKey = credsjson.getString("googleServerKey");
 
         scanner.close();
+        
+        InputStream helpIS = instance.getClass().getClassLoader().getResourceAsStream("help.txt");
+        BufferedReader in = new BufferedReader(new InputStreamReader(helpIS));
+
+        String inputLine;
+        while ((inputLine = in.readLine()) != null) {
+            helpMsg = helpMsg + inputLine + "\n";
+        }
+        in.close();
 
         //Initialise event listeners
         listenerBot = new EventListenerBoat(0x01, PREFIX);
@@ -114,6 +128,9 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "unpause", new UnpauseCommand());
         CommandRegistry.registerCommand(0x11, "getid", new GetIdCommand());
         CommandRegistry.registerCommand(0x11, "shuffle", new ShuffleCommand());
+        
+        //Backup
+        CommandRegistry.registerCommand(0x11, "help", new HelpCommand());
         
         MusicPersistenceHandler.reloadPlaylists();
         

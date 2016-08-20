@@ -8,7 +8,6 @@ import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
 import fredboat.commandmeta.CommandRegistry;
 import fredboat.event.EventListenerBoat;
-import frederikam.jca.JCA;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,16 +19,13 @@ import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.JDAInfo;
 import net.dv8tion.jda.entities.User;
 import org.json.JSONObject;
-import redis.clients.jedis.Jedis;
 
 public class MusicFredBoat {
 
     public static final boolean IS_BETA = System.getProperty("os.name").toLowerCase().contains("windows");
     public static volatile JDA jdaBot;
-    public static JCA jca;
     public static final String PREFIX = IS_BETA ? "¤" : ";;";
     public static final String OWNER_ID = "81011298891993088";
-    public static Jedis jedis;
     public static final long START_TIME = System.currentTimeMillis();
     //public static final String ACCOUNT_EMAIL_KEY = IS_BETA ? "emailBeta" : "emailProduction";
     //public static final String ACCOUNT_PASSWORD_KEY = IS_BETA ? "passwordBeta" : "passwordProduction";

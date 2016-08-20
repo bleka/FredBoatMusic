@@ -1,10 +1,10 @@
 package fredboat.commandmeta;
 
 import fredboat.MusicFredBoat;
+import fredboat.util.DiscordUtil;
 import fredboat.util.TextUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
-import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
@@ -28,6 +28,13 @@ public class CommandManager {
                 return;
             }
         }
+        
+        if(invoked instanceof IBackupCommand){
+            if(DiscordUtil.isOtherBotPresent(guild)){
+                return;
+            }
+        }
+        
         try {
             invoked.onInvoke(guild, channel, invoker, message, args);
         } catch (Exception e) {

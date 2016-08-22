@@ -28,14 +28,20 @@ public class MusicGC extends Thread {
                 HashMap<String, GuildPlayer> players = PlayerRegistry.getRegistry();
                 
                 for(GuildPlayer player : players.values()){
+                    
                     if(player.isPaused()
                             && player.isStopped() == false
                             && player.getMillisSincePause() > 60000){
                         player.stop();
                         System.out.println("Stopped player: " + player);
-                    } else if(player.getChannel() == null
-                            && player.isStopped() == false){
+                    }
+                    
+                    if(player.getChannel() != null){
+                        player.markIsInVC();
+                    } else if(player.isStopped() == false
+                            && player.getMillisSinceInVC() > 300000) {
                         player.stop();
+                        System.out.println("Stopped player for not being in a VC last 5 minutes: " + player);
                     }
                 }
             }

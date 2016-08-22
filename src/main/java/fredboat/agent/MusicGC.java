@@ -16,6 +16,7 @@ public class MusicGC extends Thread {
 
     @Override
     public void run() {
+        System.out.println("Music GC running");
         while(true){
             synchronized(this){
                 try {
@@ -32,6 +33,9 @@ public class MusicGC extends Thread {
                             && player.getMillisSincePause() > 60000){
                         player.stop();
                         System.out.println("Stopped player: " + player);
+                    } else if(player.getChannel() == null
+                            && player.isStopped() == false){
+                        player.stop();
                     }
                 }
             }

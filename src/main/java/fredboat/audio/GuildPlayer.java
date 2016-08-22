@@ -46,7 +46,7 @@ public class GuildPlayer extends MusicPlayer {
     public void joinChannel(User usr) throws MessagingException {
         VoiceChannel targetChannel = getUserCurrentVoiceChannel(usr);
         joinChannel(targetChannel);
-        lastTimeInVC = System.currentTimeMillis();
+        markIsInVC();
     }
 
     public void joinChannel(VoiceChannel targetChannel) throws MessagingException {
@@ -265,6 +265,10 @@ public class GuildPlayer extends MusicPlayer {
     
     public long getMillisSinceInVC() {
         return System.currentTimeMillis() - lastTimeInVC;
+    }
+    
+    public void markIsInVC(){
+        lastTimeInVC = System.currentTimeMillis();
     }
 
     @Override

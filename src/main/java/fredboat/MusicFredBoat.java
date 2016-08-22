@@ -134,6 +134,7 @@ public class MusicFredBoat {
         CommandRegistry.registerCommand(0x11, "unpause", new UnpauseCommand());
         CommandRegistry.registerCommand(0x11, "getid", new GetIdCommand());
         CommandRegistry.registerCommand(0x11, "shuffle", new ShuffleCommand());
+        CommandRegistry.registerCommand(0x11, "playerdebug", new PlayerDebugCommand());
         
         //Backup
         CommandRegistry.registerCommand(0x11, "help", new HelpCommand());

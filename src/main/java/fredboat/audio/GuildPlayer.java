@@ -27,6 +27,7 @@ public class GuildPlayer extends MusicPlayer {
     public final HashMap<String, VideoSelection> selections = new HashMap<>();
     public TextChannel currentTC;
     public long lastTimePaused = System.currentTimeMillis();
+    public long lastTimeInVC = System.currentTimeMillis();
     public final PlayerEventListener eventListener;
     public String lastYoutubeVideoId = null;
 
@@ -45,6 +46,7 @@ public class GuildPlayer extends MusicPlayer {
     public void joinChannel(User usr) throws MessagingException {
         VoiceChannel targetChannel = getUserCurrentVoiceChannel(usr);
         joinChannel(targetChannel);
+        lastTimeInVC = System.currentTimeMillis();
     }
 
     public void joinChannel(VoiceChannel targetChannel) throws MessagingException {
@@ -212,6 +214,17 @@ public class GuildPlayer extends MusicPlayer {
             }
         }
     }
+    
+    public int getSongCount(){
+        int count = 0;
+        if(getCurrentAudioSource() != null){
+            count++;
+        }
+        
+        count += getAudioQueue().size();
+        
+        return count;
+    }
 
     public VoiceChannel getChannel() {
         return getUserCurrentVoiceChannel(jda.getSelfInfo());
@@ -248,6 +261,10 @@ public class GuildPlayer extends MusicPlayer {
 
     public long getMillisSincePause() {
         return System.currentTimeMillis() - lastTimePaused;
+    }
+    
+    public long getMillisSinceInVC() {
+        return System.currentTimeMillis() - lastTimeInVC;
     }
 
     @Override

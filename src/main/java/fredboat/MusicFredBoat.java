@@ -4,6 +4,7 @@ import fredboat.agent.CarbonAgent;
 import fredboat.agent.MusicGC;
 import fredboat.audio.MusicPersistenceHandler;
 import fredboat.audio.PlayerRegistry;
+import fredboat.audio.queue.MusicQueueProcessor;
 import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
 import fredboat.command.util.HelpCommand;
@@ -144,6 +145,9 @@ public class MusicFredBoat {
         //Start music GC
         MusicGC mgc = new MusicGC(jdaBot);
         mgc.start();
+        
+        MusicQueueProcessor qp = new MusicQueueProcessor();
+        qp.start();
     }
 
     public static void shutdown(int code) {

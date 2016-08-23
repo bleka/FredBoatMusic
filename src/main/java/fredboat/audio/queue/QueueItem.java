@@ -5,11 +5,13 @@ import fredboat.audio.PlayerRegistry;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.TextChannel;
+import net.dv8tion.jda.entities.User;
 import net.dv8tion.jda.player.source.AudioSource;
 
 public class QueueItem {
 
     public final JDA jda;
+    public final String invoker;
     public final String guild;
     public final String tc;
     public final AudioSource source;
@@ -17,16 +19,18 @@ public class QueueItem {
     public boolean lastPlaylistItem = false;
     public int playlistIndex = 0;
 
-    public QueueItem(Guild guild, TextChannel tc, AudioSource source) {
-        this.jda = guild.getJDA();
-        this.guild = guild.getId();
+    public QueueItem(User invoker, TextChannel tc, AudioSource source) {
+        this.invoker = invoker.getId();
+        this.jda = invoker.getJDA();
+        this.guild = tc.getGuild().getId();
         this.tc = tc.getId();
         this.source = source;
     }
 
-    public QueueItem(Guild guild, TextChannel tc, AudioSource source, String playlistId, int playlistIndex, boolean isLastPlaylistItem) {
-        this.jda = guild.getJDA();
-        this.guild = guild.getId();
+    public QueueItem(User invoker, TextChannel tc, AudioSource source, String playlistId, int playlistIndex, boolean isLastPlaylistItem) {
+        this.invoker = invoker.getId();
+        this.jda = invoker.getJDA();
+        this.guild = tc.getGuild().getId();
         this.tc = tc.getId();
         this.source = source;
 
@@ -39,8 +43,12 @@ public class QueueItem {
         return jda;
     }
 
+    public User getInvoker() {
+        return jda.getUserById(invoker);
+    }
+
     public Guild getGuild() {
-        return jda.getGuildById(tc);
+        return jda.getGuildById(guild);
     }
 
     public GuildPlayer getPlayer() {

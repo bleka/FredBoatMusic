@@ -1,5 +1,7 @@
 package fredboat.audio;
 
+import fredboat.audio.queue.MusicQueueProcessor;
+import fredboat.audio.queue.QueueItem;
 import fredboat.commandmeta.MessagingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import net.dv8tion.jda.player.source.AudioInfo;
 import net.dv8tion.jda.player.source.AudioSource;
 import net.dv8tion.jda.player.source.RemoteSource;
 import net.dv8tion.jda.utils.PermissionUtil;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class GuildPlayer extends MusicPlayer {
 
@@ -142,26 +145,12 @@ public class GuildPlayer extends MusicPlayer {
             }
         } else if (playlist.getSources().size() == 1) {
             AudioSource source = playlist.getSources().get(0);
-            AudioInfo info = source.getInfo();
-            if (info.getError() != null) {
-                manager.closeAudioConnection();
-                throw new MessagingException("Could not load URL: " + info.getError());
-            }
-            if (info.isLive()) {
-                throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
-            }
-            this.getAudioQueue().add(source);
-            if (this.isPlaying()) {
-                channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
-            } else {
-                channel.sendMessage("**" + source.getInfo().getTitle() + "** will now play.");
-                this.play();
-            }
+            
+            QueueItem item = new QueueItem(invoker, channel, source);
+            MusicQueueProcessor.add(item);
         } else {
             //We have multiple sources in the playlist
             channel.sendMessage("Found a playlist with " + playlist.getSources().size() + " entries");
-            int successfullyAdded = 0;
-            int i = 0;
 
             //Check if the player is under cooldown
             if (playlistTimeoutEnds > System.currentTimeMillis()) {
@@ -173,56 +162,36 @@ public class GuildPlayer extends MusicPlayer {
                 channel.sendMessage("This playlist contains too many entries. Adding the first " + MAX_PLAYLIST_ENTRIES + " instead...");
             }
 
+            String id = RandomStringUtils.random(16);
+
+            int i = 0;
+
             for (AudioSource source : playlist.getSources()) {
                 i++;
-                AudioInfo info = source.getInfo();
-                if (info.getError() != null) {
-                    channel.sendMessage("Failed to queue #" + i + ": " + info.getError());
-                } else if (info.isLive()) {
-                    throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
+
+                if (i == MAX_PLAYLIST_ENTRIES || i == playlist.getSources().size()) {
+                    QueueItem item = new QueueItem(invoker, channel, source, id, i - 1, true);
+                    MusicQueueProcessor.add(item);
+                    break;
                 } else {
-                    successfullyAdded++;
-                    this.getAudioQueue().add(source);
+                    QueueItem item = new QueueItem(invoker, channel, source, id, i - 1, false);
+                    MusicQueueProcessor.add(item);
                 }
 
-                //Begin to play if we are not already and we have at least one source
-                if (this.isPlaying() == false && this.getAudioQueue().isEmpty() == false) {
-                    this.play();
-                }
-
-                if (successfullyAdded == MAX_PLAYLIST_ENTRIES) {
-                    break;
-                }
             }
 
-            playlistTimeoutEnds = System.currentTimeMillis() + 20000 * successfullyAdded;
-
-            switch (successfullyAdded) {
-                case 0:
-                    channel.sendMessage("Failed to queue any new songs.");
-                    break;
-                case 1:
-                    channel.sendMessage("A song has been added to the queue.");
-                    break;
-                default:
-                    channel.sendMessage("**" + successfullyAdded + " songs** have been successfully added.");
-                    break;
-            }
-
-            if (!this.isPlaying()) {
-                this.play();
-            }
+            playlistTimeoutEnds = System.currentTimeMillis() + 20000 * playlist.getSources().size();
         }
     }
-    
-    public int getSongCount(){
+
+    public int getSongCount() {
         int count = 0;
-        if(getCurrentAudioSource() != null){
+        if (getCurrentAudioSource() != null) {
             count++;
         }
-        
+
         count += getAudioQueue().size();
-        
+
         return count;
     }
 
@@ -262,12 +231,12 @@ public class GuildPlayer extends MusicPlayer {
     public long getMillisSincePause() {
         return System.currentTimeMillis() - lastTimePaused;
     }
-    
+
     public long getMillisSinceInVC() {
         return System.currentTimeMillis() - lastTimeInVC;
     }
-    
-    public void markIsInVC(){
+
+    public void markIsInVC() {
         lastTimeInVC = System.currentTimeMillis();
     }
 

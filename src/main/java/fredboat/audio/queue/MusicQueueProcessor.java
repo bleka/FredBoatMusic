@@ -1,7 +1,6 @@
 package fredboat.audio.queue;
 
 import fredboat.audio.GuildPlayer;
-import static fredboat.audio.GuildPlayer.MAX_PLAYLIST_ENTRIES;
 import fredboat.commandmeta.MessagingException;
 import fredboat.util.TextUtils;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,18 +36,20 @@ public class MusicQueueProcessor extends Thread {
                     AudioSource source = item.getSource();
                     AudioInfo info = source.getInfo();
                     GuildPlayer player = item.getPlayer();
-
+                    
                     if (!item.isPlaylistItem()) {
                         //Just a single item
 
                         if (info.getError() != null) {
-                            manager.closeAudioConnection();
                             throw new MessagingException("Could not load URL: " + info.getError());
                         }
+
                         if (info.isLive()) {
                             throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
                         }
+
                         player.getAudioQueue().add(source);
+                        
                         if (player.isPlaying()) {
                             channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
                         } else {
@@ -57,7 +58,7 @@ public class MusicQueueProcessor extends Thread {
                         }
                     } else {
                         if (!item.getPlaylistId().equals(lastPlaylistId)) {
-                            lastPlaylistId = "";
+                            lastPlaylistId = item.getPlaylistId();
                             successfullyAdded = 0;
                         }
 
@@ -76,7 +77,17 @@ public class MusicQueueProcessor extends Thread {
                         }
 
                         if (item.isLastPlaylistItem()) {
-                            channel.sendMessage("Successfully added **" + successfullyAdded + " tracks to the queue.");
+                            switch (successfullyAdded) {
+                                case 0:
+                                    channel.sendMessage("Failed to queue any new songs.");
+                                    break;
+                                case 1:
+                                    channel.sendMessage("A song has been added to the queue.");
+                                    break;
+                                default:
+                                    channel.sendMessage("**" + successfullyAdded + " songs** have been successfully added.");
+                                    break;
+                            }
                         }
                     }
                 } catch (MessagingException ex) {
@@ -91,7 +102,7 @@ public class MusicQueueProcessor extends Thread {
         }
     }
 
-    public void add(QueueItem item) {
+    public static void add(QueueItem item) {
         queue.add(item);
     }
 

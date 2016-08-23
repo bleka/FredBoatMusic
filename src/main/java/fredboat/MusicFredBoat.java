@@ -140,14 +140,14 @@ public class MusicFredBoat {
         //Backup
         CommandRegistry.registerCommand(0x11, "help", new HelpCommand());
         
-        MusicPersistenceHandler.reloadPlaylists();
+        //Threads
+        MusicQueueProcessor qp = new MusicQueueProcessor();
+        qp.start();
         
-        //Start music GC
         MusicGC mgc = new MusicGC(jdaBot);
         mgc.start();
         
-        MusicQueueProcessor qp = new MusicQueueProcessor();
-        qp.start();
+        MusicPersistenceHandler.reloadPlaylists();
     }
 
     public static void shutdown(int code) {

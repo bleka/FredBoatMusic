@@ -139,7 +139,7 @@ public class MusicPersistenceHandler {
             } finally {
                 try {
                     is.close();
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(MusicPersistenceHandler.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

@@ -147,7 +147,11 @@ public class MusicFredBoat {
         MusicGC mgc = new MusicGC(jdaBot);
         mgc.start();
         
-        MusicPersistenceHandler.reloadPlaylists();
+        try {
+            MusicPersistenceHandler.reloadPlaylists();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void shutdown(int code) {

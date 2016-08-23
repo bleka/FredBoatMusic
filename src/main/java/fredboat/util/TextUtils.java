@@ -24,6 +24,10 @@ public class TextUtils {
         return mes;
     }
 
+    public static void handleException(Exception e, MessageChannel channel) {
+        handleException(e, channel, null);
+    }
+    
     public static void handleException(Exception e, MessageChannel channel, User invoker) {
         if (e instanceof MessagingException){
             channel.sendMessage(invoker.getUsername() + ": " + e.getMessage());
@@ -31,8 +35,12 @@ public class TextUtils {
         }
         MessageBuilder builder = new MessageBuilder();
 
-        builder.appendMention(invoker);
-        builder.appendString(" an error occured :anger: ```java\n" + e.toString().replace(MusicFredBoat.googleServerKey, "GOOGLE_SERVER_KEY") + "\n");
+        if(invoker != null){
+            builder.appendMention(invoker);
+            builder.appendString(" an error occured :anger: ```java\n" + e.toString().replace(MusicFredBoat.googleServerKey, "GOOGLE_SERVER_KEY") + "\n");
+        } else {
+            builder.appendString("An error occured :anger: ```java\n" + e.toString().replace(MusicFredBoat.googleServerKey, "GOOGLE_SERVER_KEY") + "\n");
+        }
 
         //builder.appendString("```java\n");
         for (StackTraceElement ste : e.getStackTrace()) {

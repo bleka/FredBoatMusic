@@ -79,4 +79,9 @@ public class QueueItem {
         return playlistId != null;
     }
 
+    @Override
+    public String toString() {
+        return "[QI:"+ source.getSource() + "]";
+    }
+
 }

@@ -21,14 +21,15 @@ public class MusicQueueProcessor extends Thread {
 
     @Override
     public void run() {
-        super.run(); //To change body of generated methods, choose Tools | Templates.
-
         String lastPlaylistId = "";
         int successfullyAdded = 0;
 
+        System.out.println("Started audio queue processor");
+        
         while (true) {
             try {
                 QueueItem item = queue.take();
+                System.out.println("Took item from queue: " + item);
                 TextChannel channel = item.getTextChannel();
 
                 try {
@@ -103,6 +104,7 @@ public class MusicQueueProcessor extends Thread {
     }
 
     public static void add(QueueItem item) {
+        System.out.println("Added item to queue: " + item);
         queue.add(item);
     }
 

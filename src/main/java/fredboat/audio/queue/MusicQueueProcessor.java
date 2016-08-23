@@ -3,6 +3,7 @@ package fredboat.audio.queue;
 import fredboat.audio.GuildPlayer;
 import static fredboat.audio.GuildPlayer.MAX_PLAYLIST_ENTRIES;
 import fredboat.commandmeta.MessagingException;
+import fredboat.util.TextUtils;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,53 +30,59 @@ public class MusicQueueProcessor extends Thread {
         while (true) {
             try {
                 QueueItem item = queue.take();
-
-                AudioManager manager = item.getGuild().getAudioManager();
-                AudioSource source = item.getSource();
-                AudioInfo info = source.getInfo();
-                GuildPlayer player = item.getPlayer();
                 TextChannel channel = item.getTextChannel();
 
-                if (!item.isPlaylistItem()) {
-                    //Just a single item
+                try {
+                    AudioManager manager = item.getGuild().getAudioManager();
+                    AudioSource source = item.getSource();
+                    AudioInfo info = source.getInfo();
+                    GuildPlayer player = item.getPlayer();
 
-                    if (info.getError() != null) {
-                        manager.closeAudioConnection();
-                        throw new MessagingException("Could not load URL: " + info.getError());
-                    }
-                    if (info.isLive()) {
-                        throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
-                    }
-                    player.getAudioQueue().add(source);
-                    if (player.isPlaying()) {
-                        channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
-                    } else {
-                        channel.sendMessage("**" + source.getInfo().getTitle() + "** will now play.");
-                        player.play();
-                    }
-                } else {
-                    if (!item.getPlaylistId().equals(lastPlaylistId)) {
-                        lastPlaylistId = "";
-                        successfullyAdded = 0;
-                    }
+                    if (!item.isPlaylistItem()) {
+                        //Just a single item
 
-                    if (info.getError() != null) {
-                        channel.sendMessage("Failed to queue #" + item.getPlaylistIndex() + ": " + info.getError());
-                    } else if (info.isLive()) {
-                        throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
-                    } else {
-                        successfullyAdded++;
+                        if (info.getError() != null) {
+                            manager.closeAudioConnection();
+                            throw new MessagingException("Could not load URL: " + info.getError());
+                        }
+                        if (info.isLive()) {
+                            throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
+                        }
                         player.getAudioQueue().add(source);
-                    }
+                        if (player.isPlaying()) {
+                            channel.sendMessage("**" + source.getInfo().getTitle() + "** has been added to the queue.");
+                        } else {
+                            channel.sendMessage("**" + source.getInfo().getTitle() + "** will now play.");
+                            player.play();
+                        }
+                    } else {
+                        if (!item.getPlaylistId().equals(lastPlaylistId)) {
+                            lastPlaylistId = "";
+                            successfullyAdded = 0;
+                        }
 
-                    //Begin to play if we are not already and we have at least one source
-                    if (player.isPlaying() == false && player.getAudioQueue().isEmpty() == false) {
-                        player.play();
-                    }
+                        if (info.getError() != null) {
+                            channel.sendMessage("Failed to queue #" + item.getPlaylistIndex() + ": " + info.getError());
+                        } else if (info.isLive()) {
+                            throw new MessagingException("The provided source is currently live, but I cannot handle live sources.");
+                        } else {
+                            successfullyAdded++;
+                            player.getAudioQueue().add(source);
+                        }
 
-                    if(item.isLastPlaylistItem()){
-                        channel.sendMessage("Successfully added **" + successfullyAdded + " tracks to the queue.");
+                        //Begin to play if we are not already and we have at least one source
+                        if (player.isPlaying() == false && player.getAudioQueue().isEmpty() == false) {
+                            player.play();
+                        }
+
+                        if (item.isLastPlaylistItem()) {
+                            channel.sendMessage("Successfully added **" + successfullyAdded + " tracks to the queue.");
+                        }
                     }
+                } catch (MessagingException ex) {
+                    channel.sendMessage(ex.getMessage());
+                } catch (Exception ex) {
+                    TextUtils.handleException(ex, channel);
                 }
 
             } catch (Exception ex) {

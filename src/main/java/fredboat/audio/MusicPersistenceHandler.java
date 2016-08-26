@@ -101,6 +101,7 @@ public class MusicPersistenceHandler {
                 is = new FileInputStream(file);
                 Scanner scanner = new Scanner(is);
                 JSONObject data = new JSONObject(scanner.useDelimiter("\\A").next());
+                scanner.close();
 
                 GuildPlayer player = PlayerRegistry.get(gId);
                 

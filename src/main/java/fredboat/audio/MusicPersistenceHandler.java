@@ -146,7 +146,8 @@ public class MusicPersistenceHandler {
         }
 
         for(File f : dir.listFiles()){
-            f.delete();
+            boolean deleted = f.delete();
+            System.out.println(deleted ? "Deleted persistence file: " + f : "Failed to delete persistence file: " + f);
         }
         
         dir.delete();

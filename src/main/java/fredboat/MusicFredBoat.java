@@ -66,6 +66,7 @@ public class MusicFredBoat {
 
         accountToken = credsjson.getString(ACCOUNT_TOKEN_KEY);
         googleServerKey = credsjson.getString("googleServerKey");
+        String carbonHost = credsjson.optString("carbonHost");
 
         scanner.close();
         
@@ -92,8 +93,14 @@ public class MusicFredBoat {
         
         //Start statistics agent
         if (!IS_BETA) {
-            CarbonAgent carbon = new CarbonAgent(jdaBot, "music", true);
-            carbon.start();
+            if (!carbonHost.equals("")) {
+                CarbonAgent carbonAgent = new CarbonAgent(jdaBot, carbonHost, "music", !IS_BETA);
+                carbonAgent.setDaemon(true);
+                carbonAgent.start();
+                System.out.println("Started reporting to carbon-cache at " + carbonHost + ".");
+            } else {
+                System.out.println("No carbon host configured. Skipping carbon daemon.");
+            }
         }
     }
 

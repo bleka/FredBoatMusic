@@ -1,5 +1,6 @@
 package fredboat.agent;
 
+import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.CommandManager;
 import fredboat.event.EventListenerBoat;
 import java.io.DataOutputStream;
@@ -60,6 +61,7 @@ public class CarbonAgent extends Thread {
         
         if (logProductionStats) {
             submitData("carbon.fredboat.memoryUsage." + buildStream, String.valueOf(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));//In bytes
+            submitData("carbon.fredboat.playersPlaying." + buildStream, String.valueOf(PlayerRegistry.getPlayingPlayers().size()));
         }
     }
 

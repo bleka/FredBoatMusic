@@ -135,7 +135,7 @@ public class MusicPersistenceHandler {
                 });
                 isFirst = true;
                 tc.sendMessage("Finished reloading playlist.:ok_hand::skin-tone-3:");
-            } catch (FileNotFoundException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(MusicPersistenceHandler.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {

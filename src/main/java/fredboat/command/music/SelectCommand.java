@@ -4,7 +4,7 @@ import fredboat.audio.GuildPlayer;
 import fredboat.audio.PlayerRegistry;
 import fredboat.audio.VideoSelection;
 import fredboat.commandmeta.Command;
-import fredboat.common.util.YoutubeVideo;
+import fredboat.commons.util.YoutubeVideo;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;

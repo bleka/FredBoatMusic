@@ -10,7 +10,7 @@ import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
-import fredboat.common.util.TextUtils;
+import fredboat.commons.util.TextUtils;
 import net.dv8tion.jda.JDAInfo;
 import org.json.JSONException;
 import org.json.JSONObject;

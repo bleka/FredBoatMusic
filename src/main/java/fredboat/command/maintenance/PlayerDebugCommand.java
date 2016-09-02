@@ -5,7 +5,7 @@ import fredboat.audio.GuildPlayer;
 import fredboat.audio.PlayerRegistry;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.ICommandOwnerRestricted;
-import fredboat.util.TextUtils;
+import fredboat.common.util.TextUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.dv8tion.jda.entities.Guild;

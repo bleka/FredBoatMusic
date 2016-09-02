@@ -1,4 +1,4 @@
-package fredboat.util;
+package fredboat.common.util;
 
 public class ExitCodes {
     

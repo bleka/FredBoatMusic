@@ -1,4 +1,4 @@
-package fredboat.util;
+package fredboat.common.util;
 
 import com.mashape.unirest.http.Unirest;
 import fredboat.MusicFredBoat;

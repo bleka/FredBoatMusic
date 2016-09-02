@@ -1,7 +1,7 @@
 package fredboat.audio;
 
 import fredboat.MusicFredBoat;
-import fredboat.util.ExitCodes;
+import fredboat.common.util.ExitCodes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

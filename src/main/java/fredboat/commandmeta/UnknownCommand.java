@@ -9,7 +9,7 @@ import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
-import fredboat.util.TextUtils;
+import fredboat.common.util.TextUtils;
 
 /**
  *

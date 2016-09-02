@@ -3,7 +3,7 @@ package fredboat.command.maintenance;
 import fredboat.MusicFredBoat;
 import fredboat.commandmeta.Command;
 import fredboat.commandmeta.ICommandOwnerRestricted;
-import fredboat.common.util.ExitCodes;
+import fredboat.commons.util.ExitCodes;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

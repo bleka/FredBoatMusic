@@ -1,8 +1,8 @@
 package fredboat.commandmeta;
 
 import fredboat.MusicFredBoat;
-import fredboat.common.util.DiscordUtil;
-import fredboat.common.util.TextUtils;
+import fredboat.commons.util.DiscordUtil;
+import fredboat.commons.util.TextUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import net.dv8tion.jda.entities.Guild;

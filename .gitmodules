@@ -1,0 +1,2 @@
+[submodule "src/main/java/fredboat/common"]
+	path = src/main/java/fredboat/common	url = https://github.com/Frederikam/FredBoat-Common.git

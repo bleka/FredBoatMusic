@@ -2,7 +2,7 @@ package fredboat.audio;
 
 import fredboat.audio.queue.MusicQueueProcessor;
 import fredboat.audio.queue.QueueItem;
-import fredboat.commandmeta.MessagingException;
+import fredboat.commons.commandmeta.MessagingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

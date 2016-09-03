@@ -2,8 +2,8 @@ package fredboat.command.maintenance;
 
 import fredboat.MusicFredBoat;
 import fredboat.audio.PlayerRegistry;
-import fredboat.commandmeta.Command;
-import fredboat.commandmeta.ICommandOwnerRestricted;
+import fredboat.commons.commandmeta.Command;
+import fredboat.commons.commandmeta.ICommandOwnerRestricted;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

@@ -2,10 +2,10 @@ package fredboat.command.maintenance;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import fredboat.commandmeta.CommandManager;
+import fredboat.commons.commandmeta.CommandManager;
 import fredboat.MusicFredBoat;
 import fredboat.audio.PlayerRegistry;
-import fredboat.commandmeta.Command;
+import fredboat.commons.commandmeta.Command;
 import fredboat.commons.util.CommonConstants;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;

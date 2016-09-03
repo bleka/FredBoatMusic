@@ -8,7 +8,8 @@ import fredboat.audio.queue.MusicQueueProcessor;
 import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
 import fredboat.command.util.HelpCommand;
-import fredboat.commandmeta.CommandRegistry;
+import fredboat.commons.commandmeta.CommandRegistry;
+import fredboat.commons.db.RedisCache;
 import fredboat.commons.util.CommonConstants;
 import fredboat.event.EventListenerBoat;
 import fredboat.event.EventLogger;
@@ -84,6 +85,8 @@ public class MusicFredBoat {
         System.out.println("JDA version:\t" + JDAInfo.VERSION);
 
         PlayerRegistry.init(jdaBot);
+        
+        RedisCache.init(credsjson.getString("redisHost"), credsjson.getString("redisPass"));
         
         //Start statistics agent
         if (!CommonConstants.IS_BETA) {

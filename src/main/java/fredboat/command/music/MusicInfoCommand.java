@@ -1,7 +1,7 @@
 package fredboat.command.music;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
-import fredboat.commandmeta.Command;
+import fredboat.commons.commandmeta.Command;
 import fredboat.commons.util.TextUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;

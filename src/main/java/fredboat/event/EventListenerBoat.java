@@ -5,9 +5,9 @@
  */
 package fredboat.event;
 
-import fredboat.commandmeta.Command;
-import fredboat.commandmeta.CommandManager;
-import fredboat.commandmeta.CommandRegistry;
+import fredboat.commons.commandmeta.Command;
+import fredboat.commons.commandmeta.CommandManager;
+import fredboat.commons.commandmeta.CommandRegistry;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import net.dv8tion.jda.entities.Message;

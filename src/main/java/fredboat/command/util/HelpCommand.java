@@ -1,8 +1,8 @@
 package fredboat.command.util;
 
 import fredboat.MusicFredBoat;
-import fredboat.commandmeta.Command;
-import fredboat.commandmeta.IBackupCommand;
+import fredboat.commons.commandmeta.Command;
+import fredboat.commons.commandmeta.IBackupCommand;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;

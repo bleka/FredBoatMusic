@@ -1,7 +1,7 @@
 package fredboat.audio.queue;
 
 import fredboat.audio.GuildPlayer;
-import fredboat.commandmeta.MessagingException;
+import fredboat.commons.commandmeta.MessagingException;
 import fredboat.commons.util.TextUtils;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;

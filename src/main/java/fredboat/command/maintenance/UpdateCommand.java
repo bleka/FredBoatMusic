@@ -1,8 +1,8 @@
 package fredboat.command.maintenance;
 
 import fredboat.MusicFredBoat;
-import fredboat.commandmeta.Command;
-import fredboat.commandmeta.ICommandOwnerRestricted;
+import fredboat.commons.commandmeta.Command;
+import fredboat.commons.commandmeta.ICommandOwnerRestricted;
 import fredboat.commons.util.ExitCodes;
 import java.io.File;
 import java.io.IOException;

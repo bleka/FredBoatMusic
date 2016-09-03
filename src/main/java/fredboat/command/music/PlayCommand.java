@@ -3,7 +3,7 @@ package fredboat.command.music;
 import fredboat.audio.GuildPlayer;
 import fredboat.audio.PlayerRegistry;
 import fredboat.audio.VideoSelection;
-import fredboat.commandmeta.Command;
+import fredboat.commons.commandmeta.Command;
 import fredboat.commons.util.YoutubeAPI;
 import fredboat.commons.util.YoutubeVideo;
 import java.util.ArrayList;

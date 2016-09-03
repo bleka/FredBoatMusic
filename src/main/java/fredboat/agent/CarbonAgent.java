@@ -1,7 +1,7 @@
 package fredboat.agent;
 
 import fredboat.audio.PlayerRegistry;
-import fredboat.commandmeta.CommandManager;
+import fredboat.commons.commandmeta.CommandManager;
 import fredboat.event.EventListenerBoat;
 import java.io.DataOutputStream;
 import java.io.IOException;

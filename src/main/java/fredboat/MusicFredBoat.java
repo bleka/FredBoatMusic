@@ -7,7 +7,7 @@ import fredboat.audio.PlayerRegistry;
 import fredboat.audio.queue.MusicQueueProcessor;
 import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
-import fredboat.command.util.HelpCommand;
+import fredboat.commons.command.HelpCommand;
 import fredboat.commons.commandmeta.CommandRegistry;
 import fredboat.commons.db.RedisCache;
 import fredboat.commons.util.CommonConstants;
@@ -44,8 +44,6 @@ public class MusicFredBoat {
     public static String myUserId = "";
     public static volatile User myUser;
     
-    public static String helpMsg = "";
-
     public static int readyEvents = 0;
     public static final int READY_EVENTS_REQUIRED = 1;
 
@@ -64,15 +62,6 @@ public class MusicFredBoat {
         String carbonHost = credsjson.optString("carbonHost");
 
         scanner.close();
-        
-        InputStream helpIS = instance.getClass().getClassLoader().getResourceAsStream("help.txt");
-        BufferedReader in = new BufferedReader(new InputStreamReader(helpIS));
-
-        String inputLine;
-        while ((inputLine = in.readLine()) != null) {
-            helpMsg = helpMsg + inputLine + "\n";
-        }
-        in.close();
 
         //Initialise event listeners
         listenerBot = new EventListenerBoat(0x01, CommonConstants.DEFAULT_BOT_PREFIX);

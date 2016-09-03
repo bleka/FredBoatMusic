@@ -1,4 +1,5 @@
 # FredBoatMusic
-Temporary repo for beta testing and developing the music portion of FredBoat
+Repo of the music version of FredBoat
 
-[Main repo](https://github.com/Frederikam/FredBoat)
+[Docs](https://frederikam.github.io/FredBoat/)
+[Main bot](https://github.com/Frederikam/FredBoat)

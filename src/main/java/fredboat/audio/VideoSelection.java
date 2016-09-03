@@ -1,6 +1,6 @@
 package fredboat.audio;
 
-import fredboat.commons.util.YoutubeVideo;
+import fredboat.util.YoutubeVideo;
 import java.util.ArrayList;
 import net.dv8tion.jda.entities.Message;
 

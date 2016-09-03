@@ -5,9 +5,9 @@
  */
 package fredboat.event;
 
-import fredboat.commons.commandmeta.Command;
-import fredboat.commons.commandmeta.CommandManager;
-import fredboat.commons.commandmeta.CommandRegistry;
+import fredboat.commandmeta.Command;
+import fredboat.commandmeta.CommandManager;
+import fredboat.commandmeta.CommandRegistry;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import net.dv8tion.jda.entities.Message;
@@ -33,14 +33,14 @@ public class EventListenerBoat extends ListenerAdapter {
     public static HashMap<VoiceChannel, Runnable> toRunOnConnectingToVoice = new HashMap<>();
     public User lastUserToReceiveHelp;
     public final int scope;
-    public final String defaultPrefix;
+    public final String prefix;
     private final Pattern commandNamePrefix;
 
     public static int messagesReceived = 0;
 
     public EventListenerBoat(int scope, String prefix) {
         this.scope = scope;
-        this.defaultPrefix = prefix;
+        this.prefix = prefix;
         this.commandNamePrefix = Pattern.compile("(\\w+)");
     }
 
@@ -58,11 +58,11 @@ public class EventListenerBoat extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContent().length() < defaultPrefix.length()) {
+        if (event.getMessage().getContent().length() < prefix.length()) {
             return;
         }
 
-        if (event.getMessage().getContent().substring(0, defaultPrefix.length()).equals(defaultPrefix)) {
+        if (event.getMessage().getContent().substring(0, prefix.length()).equals(prefix)) {
             String cmdName;
             Command invoked = null;
             try {

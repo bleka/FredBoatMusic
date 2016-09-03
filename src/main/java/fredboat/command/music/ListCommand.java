@@ -2,7 +2,7 @@ package fredboat.command.music;
 
 import fredboat.audio.GuildPlayer;
 import fredboat.audio.PlayerRegistry;
-import fredboat.commons.commandmeta.Command;
+import fredboat.commandmeta.Command;
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;

@@ -1,15 +1,15 @@
 package fredboat.command.maintenance;
 
 import fredboat.MusicFredBoat;
-import fredboat.commons.commandmeta.Command;
-import fredboat.commons.commandmeta.ICommandOwnerRestricted;
-import fredboat.commons.util.CommonConstants;
-import fredboat.commons.util.ExitCodes;
+import fredboat.commandmeta.Command;
+import fredboat.commandmeta.ICommandOwnerRestricted;
+import fredboat.util.CommonConstants;
+import fredboat.util.ExitCodes;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.entities.User;
-import fredboat.commons.util.TextUtils;
+import fredboat.util.TextUtils;
 
 /**
  *

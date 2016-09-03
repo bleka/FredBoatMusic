@@ -151,9 +151,11 @@ public class MusicFredBoat {
         
         //Threads
         MusicQueueProcessor qp = new MusicQueueProcessor();
+        qp.setDaemon(true);
         qp.start();
         
         MusicGC mgc = new MusicGC(jdaBot);
+        mgc.setDaemon(true);
         mgc.start();
         
         try {

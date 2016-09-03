@@ -33,14 +33,14 @@ public class EventListenerBoat extends ListenerAdapter {
     public static HashMap<VoiceChannel, Runnable> toRunOnConnectingToVoice = new HashMap<>();
     public User lastUserToReceiveHelp;
     public final int scope;
-    public final String prefix;
+    public final String defaultPrefix;
     private final Pattern commandNamePrefix;
 
     public static int messagesReceived = 0;
 
     public EventListenerBoat(int scope, String prefix) {
         this.scope = scope;
-        this.prefix = prefix;
+        this.defaultPrefix = prefix;
         this.commandNamePrefix = Pattern.compile("(\\w+)");
     }
 
@@ -58,11 +58,11 @@ public class EventListenerBoat extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContent().length() < prefix.length()) {
+        if (event.getMessage().getContent().length() < defaultPrefix.length()) {
             return;
         }
 
-        if (event.getMessage().getContent().substring(0, prefix.length()).equals(prefix)) {
+        if (event.getMessage().getContent().substring(0, defaultPrefix.length()).equals(defaultPrefix)) {
             String cmdName;
             Command invoked = null;
             try {

@@ -1,6 +1,7 @@
 package fredboat.commandmeta;
 
 import fredboat.MusicFredBoat;
+import fredboat.commons.util.CommonConstants;
 import fredboat.commons.util.DiscordUtil;
 import fredboat.commons.util.TextUtils;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class CommandManager {
         if (invoked instanceof ICommandOwnerRestricted) {
             //This command is restricted to only Frederikam
             //Check if invoker is actually Frederikam
-            if (!invoker.getId().equals(MusicFredBoat.OWNER_ID)) {
+            if (!invoker.getId().equals(CommonConstants.OWNER_ID)) {
                 channel.sendMessage(TextUtils.prefaceWithMention(invoker, " you are not allowed to use that command!"));
                 return;
             }

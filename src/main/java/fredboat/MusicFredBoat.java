@@ -9,6 +9,7 @@ import fredboat.command.music.*;
 import fredboat.command.maintenance.*;
 import fredboat.command.util.HelpCommand;
 import fredboat.commandmeta.CommandRegistry;
+import fredboat.commons.util.CommonConstants;
 import fredboat.event.EventListenerBoat;
 import fredboat.event.EventLogger;
 import java.io.BufferedReader;
@@ -28,20 +29,13 @@ import org.json.JSONObject;
 
 public class MusicFredBoat {
 
-    public static final String MAIN_BOT_ID = "150376112944447488";
-    public static final String MUSIC_BOT_ID = "150376112944447488";
-    public static final String BETA_BOT_ID = "152691313123393536";
+    public static final String OTHER_BOT_ID = CommonConstants.MAIN_BOT_ID;
     
-    public static final String OTHER_BOT_ID = MAIN_BOT_ID;
-    
-    public static final boolean IS_BETA = System.getProperty("os.name").toLowerCase().contains("windows");
     public static volatile JDA jdaBot;
-    public static final String PREFIX = IS_BETA ? "¤" : ";;";
-    public static final String OWNER_ID = "81011298891993088";
     public static final long START_TIME = System.currentTimeMillis();
     //public static final String ACCOUNT_EMAIL_KEY = IS_BETA ? "emailBeta" : "emailProduction";
     //public static final String ACCOUNT_PASSWORD_KEY = IS_BETA ? "passwordBeta" : "passwordProduction";
-    public static final String ACCOUNT_TOKEN_KEY = IS_BETA ? "tokenBeta" : "token";
+    public static final String ACCOUNT_TOKEN_KEY = CommonConstants.IS_BETA ? "tokenBeta" : "token";
     private static String accountToken;
     public static String CLIENT_ID = "184405253028970496";
     public static String googleServerKey = null;
@@ -80,7 +74,7 @@ public class MusicFredBoat {
         in.close();
 
         //Initialise event listeners
-        listenerBot = new EventListenerBoat(0x01, PREFIX);
+        listenerBot = new EventListenerBoat(0x01, CommonConstants.DEFAULT_BOT_PREFIX);
 
         jdaBot = new JDABuilder()
                 .addListener(listenerBot)
@@ -92,9 +86,9 @@ public class MusicFredBoat {
         PlayerRegistry.init(jdaBot);
         
         //Start statistics agent
-        if (!IS_BETA) {
+        if (!CommonConstants.IS_BETA) {
             if (!carbonHost.equals("")) {
-                CarbonAgent carbonAgent = new CarbonAgent(jdaBot, carbonHost, "music", !IS_BETA);
+                CarbonAgent carbonAgent = new CarbonAgent(jdaBot, carbonHost, "music", !CommonConstants.IS_BETA);
                 carbonAgent.setDaemon(true);
                 carbonAgent.start();
                 System.out.println("Started reporting to carbon-cache at " + carbonHost + ".");
